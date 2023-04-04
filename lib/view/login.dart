@@ -9,19 +9,16 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  /// 아이디와 비밀번호 변수
-  /// TextEditingController로 구현해서 인스턴스의 핸들링 함수를 리스너로 등록해줘야함
-  /// _usernameController는 아이디
-  /// _passwardController는 비밀번호
+  /// 아이디를 입력받는 [TextEditingController]
   final _usernameController = TextEditingController();
-  final _passwardController = TextEditingController();
+  /// 비밀번호를 입력받는 [TextEditingController]
+  final _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: ListView(
-          /// 앱 크기 조정을 수평 대칭적으로 함
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
           children: <Widget>[
             ///상단 출석체크 위젯
@@ -34,8 +31,8 @@ class _LoginPageState extends State<LoginPage> {
                 Text('태그 관리용', style: TextStyle(fontSize: 30),),
                 ],
              ),
-            ///아이디 및 비밀번호 입력란
-            ///_usernameController 변수 사용
+            /// 아이디 및 비밀번호 입력란
+            /// _usernameController 변수 사용
             SizedBox(height: 60.0,),
             TextField(
                 controller: _usernameController,
@@ -48,7 +45,7 @@ class _LoginPageState extends State<LoginPage> {
             ///obscureText 사용 비밀번호 입력시 숨김
             SizedBox(height: 12.0),
             TextField(
-              controller: _passwardController,
+              controller: _passwordController,
               decoration: InputDecoration(
                 filled: true,
                 labelText: 'Passward'
@@ -62,7 +59,7 @@ class _LoginPageState extends State<LoginPage> {
                   /// 누를시 입력한 내용 다 지워지도록 구현
                   TextButton(onPressed: (){
                     _usernameController.clear();
-                    _passwardController.clear();
+                    _passwordController.clear();
                   }, child: Text("Cancel"),
                   ),
                   ///다음 페이지로 가는 버튼 Next
