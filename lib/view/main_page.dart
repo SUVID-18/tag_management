@@ -63,13 +63,12 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>
           ),
         ),
 
-
         body: Center(
           child: Card(
             clipBehavior: Clip.hardEdge,
             child: InkWell(
               splashColor: Colors.blue.withAlpha(30),
-              onTap: () {
+              onTap: () { ///탭 동작 수행
                 debugPrint('Card tapped.');
                 },
               child: const SizedBox(
