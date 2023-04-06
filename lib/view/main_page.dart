@@ -43,25 +43,26 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>
       title: 'Flutter App with Card Widget in AppBar',
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('수원대학교 출결 시스템'),
+          title: const Text('수원대학교 TAG 유지보수'),
           bottom: TabBar(
             controller: _tabController,
             tabs: const <Widget>[
               Tab(
-                icon: Icon(Icons.people_alt),
-                  child: Text("학생정보")
+                icon: Icon(Icons.sticky_note_2),
+                  child: Text("스티커 등록")
               ),
               Tab(
-                icon: Icon(Icons.checklist),
-                  child: Text("출석체크")
+                icon: Icon(Icons.medical_information_outlined),
+                  child: Text("기존 정보 관리")
               ),
               Tab(
-                icon: Icon(Icons.manage_search_outlined),
-                  child: Text("출결확인")
+                icon: Icon(Icons.settings),
+                  child: Text("환경 설정")
               ),
             ],
           ),
         ),
+
 
         body: Center(
           child: Card(
@@ -76,13 +77,14 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>
                 height: 500,
                 child:Image(
                   image: NetworkImage('https://img.freepik.com/premium-vector/contactless-payment-logo-nfc-icon-nfc-letter-logo-nfc-payments-icon-for-apps_185004-435.jpg?w=826'),
-                )
+               ///이미지 사라짐 주의
                 ),
               ),
 
             ),
           ),
         )
-      );
+      )
+    );
   }
 }
