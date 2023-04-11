@@ -9,30 +9,7 @@ class ManagementPage extends StatefulWidget {
 }
 
 class _ManagementPageState extends State<ManagementPage> {
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
-  }
-}
 
-void main() => runApp(MyApp());
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter App',
-      home: HomePage(),
-    );
-  }
-}
-
-class HomePage extends StatefulWidget {
-  @override
-  _HomePageState createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
   final TextEditingController _titleEditingController =
   TextEditingController();
   final TextEditingController _contentEditingController =
@@ -46,6 +23,8 @@ class _HomePageState extends State<HomePage> {
   ];
 
   void _showEditDialog(int index) {
+    /// 강의실 정보 수정을 위해 alertDialog를 띄웁니다.
+    /// 데이터베이스로부터 받아온 _cardDataList 정보를 각 컨트롤러에 담아 화면에 표시합니다.
     _titleEditingController.text = _cardDataList[index].title;
     _contentEditingController.text = _cardDataList[index].content;
 

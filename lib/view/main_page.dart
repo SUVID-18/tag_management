@@ -2,32 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 /// 홈 화면을 나타내는 페이지 입니다.
-class MainPage extends StatelessWidget {
-  /// 앱의 이름에 해당되는 변수입니다.
-  final String appName;
-  const MainPage({required this.appName, Key? key}) : super(key: key);
 
-
-  static const String _title = 'Flutter Code Sample';
-
+class MainPage extends StatefulWidget {
+  const MainPage({Key? key, required String appName}) : super(key: key);
   @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      title: _title,
-      home: MyStatefulWidget(),
-    );
-  }
+  State<MainPage> createState() => _MainPageState();
 }
 
-class MyStatefulWidget extends StatefulWidget {
-  const MyStatefulWidget({super.key});
-
-  @override
-  State<MyStatefulWidget> createState() => _MyStatefulWidgetState();
-}
-
-class _MyStatefulWidgetState extends State<MyStatefulWidget>
-    with TickerProviderStateMixin {
+class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   late TabController _tabController;
 
   @override
@@ -39,9 +21,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter App with Card Widget in AppBar',
-      home: Scaffold(
+    return Scaffold(
         appBar: AppBar(
           title: const Text('수원대학교 TAG 유지보수'),
           bottom: TabBar(
@@ -84,7 +64,6 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>
             ),
           ),
         )
-      )
     );
   }
 }
