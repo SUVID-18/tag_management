@@ -5,15 +5,14 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
+import 'package:network_image_mock/network_image_mock.dart';
 import 'package:tag_management/main.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(App());
-
+  testWidgets('앱이 정상적으로 실행 되는지 확인', (WidgetTester tester) async {
+    mockNetworkImagesFor(() async {
+      await tester.pumpWidget(App());
+    });
   });
 }
