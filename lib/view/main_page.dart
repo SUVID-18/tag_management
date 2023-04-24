@@ -28,15 +28,15 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
             controller: _tabController,
             tabs: const <Widget>[
               Tab(
-                  icon: Icon(Icons.sticky_note_2),
+                icon: Icon(Icons.sticky_note_2),
                   child: Text("스티커 등록")
               ),
               Tab(
-                  icon: Icon(Icons.medical_information_outlined),
+                icon: Icon(Icons.medical_information_outlined),
                   child: Text("기존 정보 관리")
               ),
               Tab(
-                  icon: Icon(Icons.settings),
+                icon: Icon(Icons.settings),
                   child: Text("환경 설정")
               ),
             ],
@@ -51,15 +51,17 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
               splashColor: Colors.blue.withAlpha(30),
               onTap: () { ///탭 동작 수행
                 debugPrint('Card tapped.');
-              },
+                },
               child: SizedBox(
                 width: 500,
                 height: 500,
                 child: Image.asset('assets/images/swu_bluelogo.png'),
                 ),
               ),
+
             ),
           ),
-        );
+        )
+    );
   }
 }
