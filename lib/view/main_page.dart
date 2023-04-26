@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:tag_management/viewmodel/nfc_management.dart';
 
 /// 홈 화면을 나타내는 페이지 입니다.
 
@@ -12,7 +10,6 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   late TabController _tabController;
-  NfcManagementViewModel _viewModel = NfcManagementViewModel();
 
   @override
   void initState() {
@@ -42,11 +39,6 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                   child: Text("환경 설정")
               ),
             ],
-            onTap: (index){
-              if (index==0){
-                _viewModel.tagWrite('IT 304호');
-              }
-            },
           ),
         ),
 

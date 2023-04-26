@@ -1,6 +1,6 @@
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
-import 'package:tag_management/model/nfc.dart';
 import 'package:nfc_manager/nfc_manager.dart';
+import 'package:tag_management/model/nfc.dart';
 
 
 /// NFC 태그를 읽고 쓰는 기능을 담은 뷰모델
@@ -19,7 +19,8 @@ class NfcManagementViewModel {
       var ndef = Ndef.from(tag);
 
       final dynamicLinkParams = DynamicLinkParameters(
-        link: Uri.parse('https://suvid.page.link/attendance?${nfcObject.uuid}'),
+        link: Uri.parse(
+            'https://suvid.page.link/attendance?id=${nfcObject.uuid}'),
         uriPrefix: 'https://suvid.page.link',
         androidParameters: const AndroidParameters(
           packageName: 'com.suvid.check_attendance_student',
@@ -32,7 +33,7 @@ class NfcManagementViewModel {
       NdefMessage message = NdefMessage([NdefRecord.createUri(dynamicLink)]);
 
       try {
-        await ndef?.write(message);
+        ndef?.write(message).then((value) => print('기록 완료'));
         NfcManager.instance.stopSession();
       } catch (e) {
         NfcManager.instance.stopSession(errorMessage: e.toString());
