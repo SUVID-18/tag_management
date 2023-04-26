@@ -7,9 +7,9 @@ import 'package:nfc_manager/nfc_manager.dart';
 class NfcManagementViewModel {
 
   /// NFC 태그 스티커에 기록된 dynamicLink를 수정하는 메서드. ( firebase 수정은 추후 작업 )
-  void tagWrite(String? uuid, String lectureRoom) {
+  void tagWrite(String lectureRoom) {
     // 정보를 입력할 NFC 객체 생성
-    NfcObject nfcObject = NfcObject(uuid: uuid, lectureRoom: lectureRoom);
+    NfcObject nfcObject = NfcObject(lectureRoom: lectureRoom);
 
     // 데이터베이스 수정을 위한 객체. 아직 사용 안함.
     Map<String, dynamic> json = nfcObject.toJson();

@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:tag_management/firebase_options.dart';
 import 'package:tag_management/view/login.dart';
 import 'package:tag_management/view/main_page.dart';
 import 'package:tag_management/view/management.dart';
 import 'package:tag_management/view/upload.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() => runApp(App());
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  runApp(App());
+}
 
 /// 앱 이름에 해당되는 상수
 const String appName = '태그 관리 앱';

@@ -1,6 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.suvid.tag_management">
-   <application
+    <uses-permission android:name="android.permission.NFC" />
+    <application
         android:label="tag_management"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
