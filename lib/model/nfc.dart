@@ -2,16 +2,22 @@ import 'package:uuid/uuid.dart';
 
 class NfcObject {
   /// NFC 태그의 UUID(자동 생성됨)
-  String? uuid = const Uuid().v4();
+  String get uuid => _uuid;
 
   /// 강의실 이름(예시: IT 404호)
   String lectureRoom;
+
+  String _uuid = const Uuid().v4();
 
   /// 강의실 태그 정보를 업로드 하기 위한 생성자
   ///
   /// 강의실 태그에 관한 정보를 담고있는 객체의 생성자이다. [lectureRoom]에 강의실 위치(IT 404호)를
   /// 기입하면 된다. [uuid]의 경우 자동으로 생성되기 때문에 명시적으로 매개변수를 전달할 필요가 없다.
-  NfcObject({this.uuid, required this.lectureRoom});
+  NfcObject({String? uuid, required this.lectureRoom}) {
+    if (uuid != null) {
+      _uuid = uuid;
+    }
+  }
 
   /// [json]에서 객체를 역직렬화 하는 경우(NFC 객체로 가져오기) 사용되는 `factory` 생성자
   ///
