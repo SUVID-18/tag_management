@@ -52,18 +52,15 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
               onTap: () { ///탭 동작 수행
                 debugPrint('Card tapped.');
                 },
-              child: const SizedBox(
+              child: SizedBox(
                 width: 500,
                 height: 500,
-                child:Image(
-                  image: NetworkImage('https://img.freepik.com/premium-vector/contactless-payment-logo-nfc-icon-nfc-letter-logo-nfc-payments-icon-for-apps_185004-435.jpg?w=826'),
-               ///이미지 사라짐 주의
+                child: Image.asset('assets/images/swu_bluelogo.png'),
                 ),
               ),
 
             ),
           ),
-        )
-    );
+        );
   }
 }

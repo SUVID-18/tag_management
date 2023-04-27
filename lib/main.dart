@@ -20,18 +20,20 @@ class App extends StatelessWidget {
       builder: (context, state) => MainPage(
         appName: appName,
       ),
-    ),
-    GoRoute(
-      path: '/login',
-      builder: (context, state) => LoginPage(),
-    ),
-    GoRoute(
-      path: '/upload',
-      builder: (context, state) => UploadPage(),
-    ),
-    GoRoute(
-      path: '/management',
-      builder: (context, state) => ManagementPage(),
+      routes: [
+        GoRoute(
+          path: 'login',
+          builder: (context, state) => LoginPage(),
+        ),
+        GoRoute(
+          path: 'upload',
+          builder: (context, state) => UploadPage(),
+        ),
+        GoRoute(
+          path: 'management',
+          builder: (context, state) => ManagementPage(),
+        ),
+      ]
     ),
   ]);
 
