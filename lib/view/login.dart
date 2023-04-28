@@ -55,13 +55,6 @@ class _LoginPageState extends State<LoginPage> {
               ///이벤트 버튼 구현 위젯
               ButtonBar(
                 children: <Widget>[
-                  // cancel버튼
-                  // 누를 시 입력한 내용 다 지워지도록 구현
-                  TextButton(onPressed: (){
-                    _usernameController.clear();
-                    _passwordController.clear();
-                  }, child: Text("Cancel"),
-                  ),
                   // 다음 페이지로 가는 Next 버튼
                   // pop기능 만들어놨음 메인페이지로 이동하면 됨
                   // 잘못된 정보 입력시 AlertDialog뜨도록 주석으로 구현해놓음
