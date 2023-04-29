@@ -14,7 +14,7 @@ class ManagementViewModel{
   /// ManagementViewModel의 생성자이다.
   ///
   /// ```dart
-  /// _viewmodel = ManagementViewmodel();
+  /// viewmodel = ManagementViewmodel();
   /// ```
   factory ManagementViewModel() => _instance;
 
@@ -25,7 +25,7 @@ class ManagementViewModel{
 
   /// firestore의 NFC테이블에 등록된 전체 NFC 태그 정보를 가져오는 메서드.
   /// ```dart
-  /// _cardDataList = _viewmodel.GetNfcObjectList();
+  /// _cardDataList = viewmodel.GetNfcObjectList();
   /// ```
   List<NfcObject> GetNfcObjectList(){
     // firestore에 접근하여 모든 데이터를 끌어온다.
@@ -41,8 +41,15 @@ class ManagementViewModel{
 
   /// 데이터베이스의 강의실 정보를 변경하는 메서드.
   /// 변경할 태그를 식별할 uuid를 받고, 받은 lectureroom으로 DB 정보를 수정한다.
-  void dbEdit(uuid, lectureroom){
+  ///
+  /// ```dart
+  /// setState(() {
+  ///   viewmodel.EditLectureRoom()
+  /// });
+  /// ```
+  void EditLectureRoom({required BuildContext context, required List<NfcObject> nfcObject, required uuid, required newLectureRoom}){
     // firestore에 접근해 입력받은 데이터를 전달하는 코드를 추후에 추가 예정.
+
   }
 
 
