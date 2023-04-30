@@ -44,6 +44,7 @@ dependencies:
   firebase_dynamic_links: ^5.1.1
   firebase_core: ^2.10.0
   firebase_admin: ^0.2.0
+  flutter_nfc_kit: ^3.3.1
 
 dev_dependencies:
   flutter_test:
