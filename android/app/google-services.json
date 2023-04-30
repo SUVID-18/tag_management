@@ -1,0 +1,98 @@
+{
+  "project_info": {
+    "project_number": "1084465076012",
+    "project_id": "suvid-18",
+    "storage_bucket": "suvid-18.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1084465076012:android:7297f0d6cb2b441204be89",
+        "android_client_info": {
+          "package_name": "com.suvid.check_attendance_student"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1084465076012-d4r65q8nvu48fudpcl6qtc03hdue9ent.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.suvid.check_attendance_student",
+            "certificate_hash": "f3689668b673f8416b00b945ba1f3d7c6cc8f0b7"
+          }
+        },
+        {
+          "client_id": "1084465076012-ehth61pijfrbb2pcpsp68kv80ulgbsit.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.suvid.check_attendance_student",
+            "certificate_hash": "ccfc71729f89964989aaafa841a350d7c704ba4b"
+          }
+        },
+        {
+          "client_id": "1084465076012-v09cfqrbtct7rvff5abbkac45h5kg236.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC9Lp4lPOTTJP5gf-ejVLsqy-wATJwOoBQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1084465076012-v09cfqrbtct7rvff5abbkac45h5kg236.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1084465076012-jvtcekng7mn8f1uc0lk23pkbi7t7e2j8.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.suvid.checkAttendanceStudent"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1084465076012:android:e9faa8f019e5cbdd04be89",
+        "android_client_info": {
+          "package_name": "com.suvid.tag_management"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1084465076012-v09cfqrbtct7rvff5abbkac45h5kg236.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC9Lp4lPOTTJP5gf-ejVLsqy-wATJwOoBQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1084465076012-v09cfqrbtct7rvff5abbkac45h5kg236.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1084465076012-jvtcekng7mn8f1uc0lk23pkbi7t7e2j8.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.suvid.checkAttendanceStudent"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
