@@ -91,6 +91,7 @@ class NfcManagementViewModel {
           );
         });
 
+    // NFC 활성화 여부 확인
     bool checkNfcAvailable = await NfcManager.instance.isAvailable();
     if (!checkNfcAvailable){
       Navigator.pop(context);
@@ -100,32 +101,52 @@ class NfcManagementViewModel {
     }
 
 
-    NfcManager.instance.startSession(onDiscovered: (tag) async{// NDEF 형식의 NFC 데이터인지 확인
+    NfcManager.instance.startSession(onDiscovered: (tag) async{
       Navigator.pop(context);
-      List<int> data = tag.data['ndef']['cachedMessage']['records'][0]['payload'];
-      String decodedMessage = utf8.decode(data);
+      var cachedMessage = tag.data['ndef']['cachedMessage'];
 
-      if (decodedMessage == null) {
-        showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              title: Text('오류'),
-              content: Text('기록된 내용이 없습니다.'),
-            );
-          },
-        );
-        return;
-      }
-      else{
+      // 태그에 입력된 내용이 없다면 오류메세지 출력 후 return
+      if (cachedMessage==null){
         showDialog(context: context, builder: (context) {
           return AlertDialog(
-            title: Text('인식 결과'),
-            content: Text(decodedMessage),
+            content: Text('null 값이 들어 있습니다.'),
           );
         });
+        NfcManager.instance.stopSession();
+        return;
       }
 
+      var payload = cachedMessage['records'][0]['payload'];
+      var id = cachedMessage['records'][0]['identifier'];
+
+      // id가 null이라면 오류메세지 출력 후 return
+      if (id==null){
+        showDialog(context: context, builder: (context) {
+          return AlertDialog(
+            content: Text('identifier가 존재하지 않습니다.'),
+          );
+        });
+        NfcManager.instance.stopSession();
+        return;
+      }
+
+      String decodedPayload = utf8.decode(payload);
+      String decodedID = utf8.decode(id);
+
+      // 정보를 표시하기 위한 임시 다이얼로그
+      // 추후 수정된 AleryDialog가 필요할 것 같음.
+      showDialog(context: context, builder: (context) {
+          return AlertDialog(
+            title: Text('인식 결과'),
+            content: Column(
+              children: [
+                Text('id : ' + decodedID),
+                Text('payload : ' + decodedPayload),
+              ],
+            )
+          );
+
+        });
       NfcManager.instance.stopSession();
     });
   }
