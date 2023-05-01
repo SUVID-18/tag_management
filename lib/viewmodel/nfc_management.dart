@@ -2,7 +2,6 @@ import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:nfc_manager/nfc_manager.dart';
 import 'package:tag_management/model/nfc.dart';
-import 'package:flutter_nfc_kit/flutter_nfc_kit.dart';
 import 'dart:convert';
 
 
@@ -75,6 +74,7 @@ class NfcManagementViewModel {
   }
 
   /// 메인 페이지의 이미지를 터치하면 태그를 읽는 기능을 수행한다.
+  /// 읽을 수 있는 정보는 payload에 담겨진 정보로 한정된다.
   ///
   /// ```dart
   /// onTap: {
@@ -99,46 +99,33 @@ class NfcManagementViewModel {
       return;
     }
 
+
     NfcManager.instance.startSession(onDiscovered: (tag) async{// NDEF 형식의 NFC 데이터인지 확인
-      Ndef? ndef = Ndef.from(tag);
-      if (ndef == null) {
+      Navigator.pop(context);
+      List<int> data = tag.data['ndef']['cachedMessage']['records'][0]['payload'];
+      String decodedMessage = utf8.decode(data);
+
+      if (decodedMessage == null) {
         showDialog(
           context: context,
           builder: (context) {
             return AlertDialog(
               title: Text('오류'),
-              content: Text('NDEF 형식이 아닌 NFC 태그입니다.'),
+              content: Text('기록된 내용이 없습니다.'),
             );
           },
         );
         return;
       }
+      else{
+        showDialog(context: context, builder: (context) {
+          return AlertDialog(
+            title: Text('인식 결과'),
+            content: Text(decodedMessage),
+          );
+        });
+      }
 
-      // List<int> payload = tag.data['payload'];
-      // NdefRecord record = NdefRecord
-      // if (record 타입 추출) {
-      //
-      //   String text = utf8.decode(record.payload.sublist(3));
-      //   showDialog(
-      //     context: context,
-      //     builder: (context) {
-      //       return AlertDialog(
-      //         title: Text('인식 결과'),
-      //         content: Text(text),
-      //       );
-      //     },
-      //   );
-      // } else {
-      //   showDialog(
-      //     context: context,
-      //     builder: (context) {
-      //       return AlertDialog(
-      //         title: Text('오류'),
-      //         content: Text('record가 잘못되었습니다.'),
-      //       );
-      //     },
-      //   );
-      // }
       NfcManager.instance.stopSession();
     });
   }
