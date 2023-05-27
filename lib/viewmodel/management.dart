@@ -35,7 +35,7 @@ class ManagementViewModel {
     var db = FirebaseFirestore.instance;
     List<NfcObject> tagList = [];
 
-    await db.collection('tag').get().then((event) {
+    await db.collection('classroom').get().then((event) {
       for (var doc in event.docs) {
         final NfcObject nfc = NfcObject.fromJson(doc.data());
         tagList.add(nfc);
@@ -45,7 +45,12 @@ class ManagementViewModel {
       debugPrint("스택 추적 : $stackTrace");
     });
     debugPrint(tagList.toString());
+
+
+
     return tagList;
+
+
   }
 
   void tagEdit(){
@@ -73,7 +78,7 @@ class ManagementViewModel {
     // firestore에 접근해 입력받은 데이터를 전달하는 코드를 추후에 추가 예정.
 
     // 태그 테이블 정보 가져오기.
-    var db = FirebaseFirestore.instance.collection('tag');
+    var db = FirebaseFirestore.instance.collection('classroom');
 
     // 특정 객체의 내용을 데이터베이스 수정.
     var queryTag = await db.where('uuid', isEqualTo: tag.uuid).get();
