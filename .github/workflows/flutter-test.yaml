@@ -1,0 +1,31 @@
+name: Flutter Test
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main, release, develop, main_front, back, 'feature/**' ]
+
+jobs:
+  Test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Flutter action
+        uses: subosito/flutter-action@v2.3.0
+
+      - name: Prepare for Firebase
+        env:
+          OPTIONS: ${{ secrets.FIREBASE_OPTIONS_TAG }}
+          GOOGLE_KEY: ${{ secrets.GOOGLE_SERVICES }}
+        run: |
+          echo $OPTIONS | base64 --decode > lib/firebase_options.dart
+          echo $GOOGLE_KEY | base64 --decode > android/app/google-services.json
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Test flutter app
+        run: flutter test
