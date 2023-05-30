@@ -3,11 +3,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tag_management/model/nfc.dart';
 
-// 서버에 등록된 강의실 정보를 변경. ( 즉, 정보를 가져와야 한다. )
+// 서버에 등록된 강의실 정보 및 태그 정보를 가져오는 기능을 담당하는 뷰모델이다.
 // 전체 정보를 가져오는 함수 GetNfcObjectList()
 // 태그의 강의실 정보를 변경하는 EditLectureRoom()
 
-/// 태그의 강의실 정보 변경 기능을 수행하는 뷰모델 클래스이다.
+/// 태그 조회 및 강의실 정보 변경 기능을 수행하는 뷰모델 클래스이다.
 class ManagementViewModel {
   // 싱글톤 패턴 선언부
   BuildContext context;
@@ -22,12 +22,9 @@ class ManagementViewModel {
   factory ManagementViewModel({required BuildContext context}) =>
       ManagementViewModel._privateConstructor(context: context);
 
-  /// firestore로부터 불러 온 nfc 태그 객체들의 고유 uuid, 강의실 정보가 담겨 있는 리스트이다.
-  List<NfcObject> _nfcObjectList = [];
-  List<NfcObject> get nfcObjectList => _nfcObjectList;
-
   /// firestore의 NFC테이블에 등록된 전체 NFC 태그 정보를 가져오는 메서드.
   /// ```dart
+  /// List<NfcObject> _cardDataList = [];
   /// _cardDataList = viewmodel.GetNfcObjectList();
   /// ```
   Future<List<NfcObject>> getNfcTagList() async {
@@ -44,31 +41,20 @@ class ManagementViewModel {
       debugPrint("에러 발생 : $error");
       debugPrint("스택 추적 : $stackTrace");
     });
-    debugPrint(tagList.toString());
-
-
 
     return tagList;
-
-
-  }
-
-  void tagEdit(){
-    ///서버에 등록된 태그 정보나 강의실 정보를 수정하는 기능입니다.
-
-    ///태그 등록 당시 입력했던 강의실 위치(강의를 진행하는 과목의 이름을 바꾸는 경우가 아님) 반환하기
-    ///강의실 위치 수정 시 (수정 내역을 업로드 할 수 있어야 함?)
-
-    // 1. 변경할 태그 하나만 받아옴. 예) 선택된 태그
-
   }
 
   /// 데이터베이스의 강의실 정보를 변경하는 메서드.
   /// 변경할 태그를 식별할 uuid를 받고, 받은 lectureroom으로 DB 정보를 수정한다.
   ///
   /// ```dart
-  /// setState(() {
-  ///   viewmodel.EditLectureRoom()
+  ///   // 입력할 NfcObject nfc 생성
+  ///   viewmodel.EditLectureRoom({
+  ///     context : context,
+  ///     tag : nfc,
+  ///     newLectureRoom : 'IT101'
+  ///   })
   /// });
   /// ```
   Future<void> editNfcTag (
