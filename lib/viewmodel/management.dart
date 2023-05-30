@@ -25,7 +25,7 @@ class ManagementViewModel {
   /// firestore의 NFC테이블에 등록된 전체 NFC 태그 정보를 가져오는 메서드.
   /// ```dart
   /// List<NfcObject> _cardDataList = [];
-  /// _cardDataList = viewmodel.GetNfcObjectList();
+  /// _cardDataList = viewmodel.getNfcTagList();
   /// ```
   Future<List<NfcObject>> getNfcTagList() async {
     // firestore에 접근하여 모든 데이터를 끌어온다.

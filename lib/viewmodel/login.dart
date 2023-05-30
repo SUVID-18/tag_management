@@ -40,22 +40,32 @@ class LoginViewModel with WidgetsBindingObserver {
   }
 
   /// 로그인 기능을 처리하는 뷰모델의 생성자이다.
-  /// 해당 뷰모델을 사용하기 위해서는 initState()와 dispose() 메서드에 옵저버를 추가해 주어야 한다.
+  /// 해당 뷰모델을 사용하기 위해서는 view의 createState에서 WidgetsBindingObserver를 포함해 주어야 한다.
+  ///
   /// ```dart
   /// class _LoginPageState extends State<LoginPage> with WidgetsBindingObserver
   /// ```
   ///
-  /// initState(), dispose() 또한 다음과 같은 선언이 필요하다.
+  ///
+  /// 옵저버를 사용하기 위해 createState() 내부에서 다음과 같은 선언이 필요하다.
+  ///
   /// ```dart
+  ///
+  /// var viewModel = LoginViewModel(context);
+  ///
   /// @override
   /// void initState(){
-  ///   WidgetsBinding.instance.addObserver(this);
+  ///   WidgetsBinding.instance.addObserver(viewModel);
   ///   super.initState();
   /// }
   ///
+  /// @override
   /// void dispose(){
-  ///   WidgetsBinding.instance.removeObserver(this);
+  ///   WidgetsBinding.instance.removeObserver(viewModel);
   ///   super.dispose();
+  /// }
+  ///
+  ///
   /// ```
   factory LoginViewModel({required BuildContext context}) =>
       LoginViewModel._privateConstructor(context: context);
@@ -64,20 +74,16 @@ class LoginViewModel with WidgetsBindingObserver {
   // -------------------------------------- 함수 정의 부분 ----------------------------------
 
   /// 앱 상태 변경을 위한 메서드이다.
+  ///
+  /// 화면의 lifecycle 변화에 따른 처리를 담당하므로 view에서 이를 만질 필요는 없다.
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) async{
-    // 무엇을 바꾸지?
     switch (state) {
       case AppLifecycleState.resumed:
-        // 가져오는 이메일은 반드시 null이 아니어야 한다.
-        // sharedPref 객체는 생성될 때 반드시 email의 값을 저장하므로
-        // 느낌표를 붙여 해당 String 값이 반드시 null이 아님을 밝힌다.
 
         SharedPreferences.getInstance().then((sharedPref) {
           emailControllerText.text = sharedPref.getString('email')!;
         });
-
-        debugPrint('resumed 확인');
 
         try{
           FirebaseDynamicLinks.instance.onLink.listen((event) {
@@ -99,13 +105,20 @@ class LoginViewModel with WidgetsBindingObserver {
     }
   }
 
-  // inactive 및 paused 상태 : 백그라운드 전환,
-  // foreground 전환 시 resumed 하나로 퉁치므로,
-
+  /// 로그인 페이지에서 이동 버튼을 눌렀을 경우 ( 로그인 버튼을 눌렀을 경우 ) 동작을 수행하는 메서드이다.
+  ///
+  /// 이메일 박스에 기입한 이메일로 인증 메일을 보낸다. 만약 오류가 발생할 경우, loginTextEmptyDialog를 띄우며 동작의 진행을 중단한다.
+  ///
   /// ```dart
+  /// AlertDialog warningDialog = AlertDialog(
+  ///     title: Text('로그인 실패'),
+  ///     content: Text('로그인에 실패하였습니다')
+  /// );
   ///
   /// ElevatedButton(
-  ///   onPressed: () =>  viewmodel.onPressed_sendCreateAccountLink;
+  ///   onPressed: () =>  viewmodel.sendCreateAccountLink(
+  ///     loginTextEmptyDialog: warningDialog
+  ///   );
   /// )
   /// ```
   void sendCreateAccountLink(
@@ -132,8 +145,6 @@ class LoginViewModel with WidgetsBindingObserver {
       FirebaseAuth.instance.sendSignInLinkToEmail(
           email: emailAuth, actionCodeSettings: acs)
           .catchError((onError) {
-            // 왜인지는 모르겠는데
-        // Navigator.pop 을 사용하면 검은색 화면으로 넘어가고, 더 이상 진행이 안됨.
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             content: Text('해당 이메일로 인증 메일을 보냈습니다. 확인해주세요.')));
       })
@@ -148,7 +159,7 @@ class LoginViewModel with WidgetsBindingObserver {
   void _passwordlessLogin(PendingDynamicLinkData dynamicLinkData) async {
     try {
       // 로그인을 진행함.
-      final userCredential = await FirebaseAuth.instance.signInWithEmailLink(
+      await FirebaseAuth.instance.signInWithEmailLink(
         // 기존에 저장된 데이터가 있다면, 함수 호출 이전에 초기화 시켜줘야 한다.
           email: emailControllerText.text,
           emailLink: dynamicLinkData.link.toString()
