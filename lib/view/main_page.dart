@@ -1,5 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:tag_management/view/management.dart';
 
 /// 홈 화면을 나타내는 페이지 입니다.
 
@@ -42,25 +42,39 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
             ],
           ),
         ),
-
-
-        body: Center(
-          child: Card(
-            clipBehavior: Clip.hardEdge,
-            child: InkWell(
-              splashColor: Colors.blue.withAlpha(30),
-              onTap: () { ///탭 동작 수행
-                debugPrint('Card tapped.');
+        body: TabBarView(controller: _tabController, children: [
+          Center(
+            child: Card(
+              clipBehavior: Clip.hardEdge,
+              child: InkWell(
+                splashColor: Colors.blue.withAlpha(30),
+                onTap: () {
+                  ///탭 동작 수행
+                  debugPrint('Card tapped.');
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: Text('새 강의실 이름 입력'),
+                        content: TextField(),
+                        actions: [
+                          TextButton(onPressed: null, child: Text('확인'))
+                        ],
+                      );
+                    },
+                  );
                 },
-              child: SizedBox(
-                width: 500,
+                child: SizedBox(
+                  width: 500,
                 height: 500,
                 child: Image.asset('assets/images/swu_bluelogo.png'),
                 ),
               ),
-
             ),
           ),
-        );
+          ManagementPage(),
+          // 환경설정 페이지가 들어갈 자리
+          ManagementPage(),
+        ]));
   }
 }
