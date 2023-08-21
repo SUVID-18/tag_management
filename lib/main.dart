@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tag_management/firebase_options.dart';
@@ -5,8 +6,6 @@ import 'package:tag_management/view/login.dart';
 import 'package:tag_management/view/main_page.dart';
 import 'package:tag_management/view/management.dart';
 import 'package:tag_management/view/upload.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,35 +28,28 @@ class App extends StatelessWidget {
     ),
 
     GoRoute(
-      // 테스트를 위한 임시 비활성화
-      redirect: (context, state)async {
-        if (FirebaseAuth.instance.currentUser == null) {
-          return '/login';
-          // 로그인이 안되어있으면 출결 페이지 안띄움
-        } else {
-          return null;
-        }
-      },
-      path: '/',
-      builder: (context, state) => MainPage(
-        appName: appName,
-      ),
-      routes: [
-        GoRoute(
-          path: 'upload',
-          builder: (context, state) => UploadPage(),
-        ),
-        GoRoute(
-          path: 'management',
+        // 테스트를 위한 임시 비활성화
+        // redirect: (context, state)async {
+        //   if (FirebaseAuth.instance.currentUser == null) {
+        //     return '/login';
+        //     // 로그인이 안되어있으면 출결 페이지 안띄움
+        //   } else {
+        //     return null;
+        //   }
+        // },
+        path: '/',
+        builder: (context, state) => MainPage(
+              appName: appName,
+            ),
+        routes: [
+          GoRoute(
+            path: 'upload',
+            builder: (context, state) => UploadPage(),
+          ),
+          GoRoute(
+            path: 'management',
           builder: (context, state) => ManagementPage(),
         ),
-
-        // 환경설정을 위한 페이지 필요.
-        // GoRoute(
-        //   path: 'settings',
-        //   builder: (context, state) => SettingsPage(),
-        //   ),
-
       ]
     ),
   ]);

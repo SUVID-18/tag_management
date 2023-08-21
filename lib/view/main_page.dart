@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tag_management/view/management.dart';
+import 'package:tag_management/view/settings.dart';
 
 /// 홈 화면을 나타내는 페이지 입니다.
 
@@ -23,18 +24,12 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('수원대학교 TAG 유지보수'),
+          title: const Text('TAG 유지보수'),
           bottom: TabBar(
             controller: _tabController,
             tabs: const <Widget>[
-              Tab(
-                icon: Icon(Icons.sticky_note_2),
-                  child: Text("스티커 등록")
-              ),
-              Tab(
-                icon: Icon(Icons.medical_information_outlined),
-                  child: Text("기존 정보 관리")
-              ),
+              Tab(icon: Icon(Icons.sticky_note_2), child: Text("스티커 등록")),
+              Tab(icon: Icon(Icons.pan_tool), child: Text("기존 정보 관리")),
               Tab(
                 icon: Icon(Icons.settings),
                   child: Text("환경 설정")
@@ -66,15 +61,17 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                 },
                 child: SizedBox(
                   width: 500,
-                height: 500,
-                child: Image.asset('assets/images/swu_bluelogo.png'),
+                  height: 500,
+                  child: Image.asset('assets/images/swu_bluelogo.png'),
                 ),
               ),
             ),
           ),
           ManagementPage(),
-          // 환경설정 페이지가 들어갈 자리
-          ManagementPage(),
+          SettingsPage(
+            username: '한동민',
+            onLogout: () {},
+          ),
         ]));
   }
 }
