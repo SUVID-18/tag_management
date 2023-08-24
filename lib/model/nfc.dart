@@ -34,7 +34,7 @@ class NfcObject {
   ///   );
   /// ```
   factory NfcObject.fromJson(Map<String, dynamic> json) =>
-      NfcObject(uuid: json['uuid'], lectureRoom: json['lectureRoom']);
+      NfcObject(uuid: json['tag_uuid'], lectureRoom: json['name']);
 
   /// 객체를 `JSON`으로 직렬화 하는 메서드
   ///
@@ -44,5 +44,5 @@ class NfcObject {
   /// ```dart
   /// String json = jsonEncode(nfc_object);
   /// ```
-  Map<String, dynamic> toJson() => {'uuid': uuid, 'lectureRoom': lectureRoom};
+  Map<String, dynamic> toJson() => {'tag_uuid': uuid, 'name': lectureRoom};
 }
