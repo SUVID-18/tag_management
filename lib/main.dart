@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tag_management/firebase_options.dart';
@@ -5,8 +7,6 @@ import 'package:tag_management/view/login.dart';
 import 'package:tag_management/view/main_page.dart';
 import 'package:tag_management/view/management.dart';
 import 'package:tag_management/view/upload.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -39,18 +39,18 @@ class App extends StatelessWidget {
         }
       },
       path: '/',
-      builder: (context, state) => MainPage(
-        appName: appName,
+        builder: (context, state) => const MainPage(
+              appName: appName,
       ),
       routes: [
         GoRoute(
           path: 'upload',
-          builder: (context, state) => UploadPage(),
-        ),
+            builder: (context, state) => const UploadPage(),
+          ),
         GoRoute(
           path: 'management',
-          builder: (context, state) => ManagementPage(),
-        ),
+            builder: (context, state) => const ManagementPage(),
+          ),
 
         // 환경설정을 위한 페이지 필요.
         // GoRoute(

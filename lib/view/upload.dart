@@ -11,7 +11,7 @@ class UploadPage extends StatefulWidget {
 
 class _UploadPageState extends State<UploadPage> {
 ///강의실 리스트
-  List<Map<String, dynamic>> _dataList = [
+  final List<Map<String, dynamic>> _dataList = [
     {'number': '201호', 'id': '1a2s3d4f5g'},
     {'number': '202호', 'id': '6h7j8k9l0q'},
     {'number': '303호', 'id': '11w22e33r4'},
@@ -26,11 +26,10 @@ class _UploadPageState extends State<UploadPage> {
     return Scaffold(
       //appBar 부분
       appBar: AppBar(
-        title: Text("업로드 페이지"),
+          title: const Text("업로드 페이지"),
           leading: IconButton(
             onPressed: ()=>Navigator.pop(context,"/"),
-            icon: Icon(
-                Icons.arrow_back,
+            icon: const Icon(Icons.arrow_back,
                 color: Colors.black
             ),
           )
@@ -50,11 +49,11 @@ class _UploadPageState extends State<UploadPage> {
               showDialog(context: context,
                   builder: (BuildContext context)=>
               AlertDialog(
-                title: Text("업로드 정보"),
-                content: TextField(
+                          title: const Text("업로드 정보"),
+                          content: TextField(
                   controller: _roomNumberController,
-                  decoration: InputDecoration(
-                      filled: true,
+                            decoration: const InputDecoration(
+                                filled: true,
                       labelText: '강의실 번호'
                   ),
                 ),
@@ -63,8 +62,8 @@ class _UploadPageState extends State<UploadPage> {
                   actions: <Widget>[
                     TextButton(onPressed: (){
                       Navigator.pop(context);},
-                        child: Text('확인'))
-                  ]
+                                child: const Text('확인'))
+                          ]
                 )
               );
             },

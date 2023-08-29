@@ -15,7 +15,7 @@ class _ManagementPageState extends State<ManagementPage> {
   final TextEditingController _contentEditingController =
   TextEditingController();
 
-  List<CardData> _cardDataList = [
+  final List<CardData> _cardDataList = [
     CardData(title: '고혁진', content: '105호'),
     CardData(title: '장성태', content: '418호'),
     CardData(title: '박필성', content: '108호'),
@@ -32,20 +32,20 @@ class _ManagementPageState extends State<ManagementPage> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Edit Content'),
+          title: const Text('Edit Content'),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               TextField(
                 controller: _titleEditingController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: 'Enter new title',
                 ),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               TextField(
                 controller: _contentEditingController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: 'Enter new content',
                 ),
               ),
@@ -56,7 +56,7 @@ class _ManagementPageState extends State<ManagementPage> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: Text('Cancel'),
+              child: const Text('Cancel'),
             ),
             TextButton(
               onPressed: () {
@@ -67,7 +67,7 @@ class _ManagementPageState extends State<ManagementPage> {
                 });
                 Navigator.pop(context);
               },
-              child: Text('Save'),
+              child: const Text('Save'),
             ),
           ],
         );
@@ -79,7 +79,7 @@ class _ManagementPageState extends State<ManagementPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('강의실 정보 수정 페이지'),
+        title: const Text('강의실 정보 수정 페이지'),
       ),
       body: ListView.builder(
         itemCount: _cardDataList.length,
@@ -98,7 +98,7 @@ class _ManagementPageState extends State<ManagementPage> {
                       onPressed: () {
                         _showEditDialog(index);
                       },
-                      child: Text('Edit'),
+                      child: const Text('Edit'),
                     ),
                   ],
                 ),
