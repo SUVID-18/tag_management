@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../viewmodel/login.dart';
+
 /// 로그인 시 나타나는 페이지 입니다.
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -8,7 +10,28 @@ class LoginPage extends StatefulWidget {
   State<LoginPage> createState() => _LoginPageState();
 }
 
+
 class _LoginPageState extends State<LoginPage> {
+
+  late var viewModel = LoginViewModel(context: context);
+
+  AlertDialog warningDialog = AlertDialog(
+    title: Text('로그인 실패'),
+    content: Text('로그인에 실패하였습니다')
+    );
+
+  @override
+   void initState(){
+     WidgetsBinding.instance.addObserver(viewModel);
+     super.initState();
+   }
+
+   @override
+   void dispose(){
+     WidgetsBinding.instance.removeObserver(viewModel);
+     super.dispose();
+  }
+
   /// 아이디를 입력받는 [TextEditingController]
   final _usernameController = TextEditingController();
   /// 비밀번호를 입력받는 [TextEditingController]
@@ -53,32 +76,18 @@ class _LoginPageState extends State<LoginPage> {
                 obscureText: true,
               ),
               ///이벤트 버튼 구현 위젯
+
               ButtonBar(
                 children: <Widget>[
-                  // cancel버튼
-                  // 누를 시 입력한 내용 다 지워지도록 구현
-                  TextButton(onPressed: (){
-                    _usernameController.clear();
-                    _passwordController.clear();
-                  }, child: Text("Cancel"),
-                  ),
                   // 다음 페이지로 가는 Next 버튼
-                  // pop기능 만들어놨음 메인페이지로 이동하면 됨
-                  // 잘못된 정보 입력시 AlertDialog뜨도록 주석으로 구현해놓음
-                  ElevatedButton(onPressed: (){
-                    //showDialog(
-                    //       context: context,
-                    //       builder: (BuildContext context)=>AlertDialog(
-                    //       title: Text('로그인 실패'),
-                    //       content: Text('ID나 비밀번호가 없거나 잘못되었습니다'),
-                    //       actions: <Widget>[
-                    //                   TextButton(onPressed: ()=> Navigator.pop(context),
-                    //                   child: Text('확인'))
-                    //                  ]
-                    //                 )
-                    //                );
-                    //Navigator.pop(context,"/");
-                  }, child: Text('Next'))
+                  // 뷰모델 적용 완료
+                  ///AlertDialog warningDialog = AlertDialog(
+                    ///title: Text('로그인 실패'),
+                    ///content: Text('로그인에 실패하였습니다')
+                  ///);
+                  ElevatedButton(
+                      onPressed: ()=>  viewModel.sendCreateAccountLink(loginTextEmptyDialog: warningDialog), child: Text('Next')
+                  )
                 ],
               ),
             /// 하단 로고
