@@ -1,6 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-/// 서버에 기등록된 강의실 정보를 변경하는 페이지 입니다.
 class ManagementPage extends StatefulWidget {
   const ManagementPage({Key? key}) : super(key: key);
 
@@ -9,22 +9,47 @@ class ManagementPage extends StatefulWidget {
 }
 
 class _ManagementPageState extends State<ManagementPage> {
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  final TextEditingController _titleEditingController =
-  TextEditingController();
+  /// Firebase Firestore 인스턴스 생성
+  final TextEditingController _titleEditingController = TextEditingController();
   final TextEditingController _contentEditingController =
-  TextEditingController();
+      TextEditingController();
 
-  List<CardData> _cardDataList = [
-    CardData(title: '고혁진', content: '105호'),
-    CardData(title: '장성태', content: '418호'),
-    CardData(title: '박필성', content: '108호'),
-    CardData(title: '조영일', content: '517호'),
-  ];
+//  위 코드에서 _firestore 변수를 사용하여 Firestore 인스턴스를 생성하고,
+//  _loadCardDataList 메서드 내에서 Firestore에서 데이터를 가져오도록 변경하였습니다.
+//  또한 수정된 정보를 Firestore에 업데이트하는 코드도 추가하였습니다.
+//  위 코드를 실행하면 각 카드의 수정 버튼을 눌러 정보를 수정할 수 있고,
+//  수정 사항이 Firebase Firestore에 자동으로 업데이트됩니다.
 
+  List<CardData> _cardDataList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadCardDataList();
+  }
+
+  /// Firestore에서 데이터를 가져와 _cardDataList에 저장하는 메서드
+  Future<void> _loadCardDataList() async {
+    QuerySnapshot snapshot = await _firestore.collection('classroom').get();
+    List<CardData> cardDataList = [];
+
+    for (QueryDocumentSnapshot doc in snapshot.docs) {
+      final data = doc.data() as Map<String, dynamic>;
+      cardDataList.add(CardData(
+        title: data['title'] ?? '',
+        content: data['content'] ?? '',
+      ));
+    }
+
+    setState(() {
+      _cardDataList = cardDataList;
+    });
+  }
+
+  /// 카드 정보를 수정하는 다이얼로그를 표시하는 메서드
   void _showEditDialog(int index) {
-    /// 강의실 정보 수정을 위해 alertDialog를 띄웁니다.
-    /// 데이터베이스로부터 받아온 _cardDataList 정보를 각 컨트롤러에 담아 화면에 표시합니다.
     _titleEditingController.text = _cardDataList[index].title;
     _contentEditingController.text = _cardDataList[index].content;
 
@@ -59,11 +84,18 @@ class _ManagementPageState extends State<ManagementPage> {
               child: Text('취소'),
             ),
             TextButton(
-              onPressed: () {
-                setState(() {
-                  _cardDataList[index].title = _titleEditingController.text;
-                  _cardDataList[index].content = _contentEditingController.text;
+              onPressed: () async {
+                /// 수정된 정보를 Firestore에 업데이트하는 코드
+                await _firestore
+                    .collection('classroom')
+                    .doc(index.toString())
+                    .update({
+                  'title': _titleEditingController.text,
+                  'content': _contentEditingController.text,
                 });
+                _loadCardDataList();
+
+                /// 데이터 다시 로드
                 Navigator.pop(context);
               },
               child: Text('확인'),
@@ -111,6 +143,7 @@ class _ManagementPageState extends State<ManagementPage> {
 
   @override
   void dispose() {
+    /// 페이지가 종료될 때, 사용한 TextEditingController들을 정리(dispose)합니다.
     _titleEditingController.dispose();
     _contentEditingController.dispose();
     super.dispose();
