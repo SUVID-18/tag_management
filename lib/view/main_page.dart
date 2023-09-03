@@ -68,10 +68,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
             ),
           ),
           ManagementPage(),
-          SettingsPage(
-            username: '한동민',
-            onLogout: () {},
-          ),
+          SettingsPage(),
         ]));
   }
 }
