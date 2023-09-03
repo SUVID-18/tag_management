@@ -56,18 +56,17 @@ class _ManagementPageState extends State<ManagementPage> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: Text('Cancel'),
+              child: Text('취소'),
             ),
             TextButton(
               onPressed: () {
                 setState(() {
                   _cardDataList[index].title = _titleEditingController.text;
-                  _cardDataList[index].content =
-                      _contentEditingController.text;
+                  _cardDataList[index].content = _contentEditingController.text;
                 });
                 Navigator.pop(context);
               },
-              child: Text('Save'),
+              child: Text('확인'),
             ),
           ],
         );
@@ -98,7 +97,7 @@ class _ManagementPageState extends State<ManagementPage> {
                       onPressed: () {
                         _showEditDialog(index);
                       },
-                      child: Text('Edit'),
+                      child: Text('수정'),
                     ),
                   ],
                 ),
