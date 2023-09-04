@@ -16,8 +16,8 @@ class SettingsViewModel{
 
   // 설정 페이지에 띄워야 할 정보는 관리자의 아이디, 이름, 로그인 된 상태이다.
   // 추가적인 설정은 필요하면 추가할 예정이므로 그대로 둔다.
-  late final String _userName;
-  late final String _userEmail;
+  late String _userName = '';
+  late String _userEmail = '';
 
   String get userName => _userName;
   String get userEmail => _userEmail;
