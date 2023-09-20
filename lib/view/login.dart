@@ -14,6 +14,7 @@ class _LoginPageState extends State<LoginPage> {
   ///뷰모델 선언
   late var viewModel = LoginViewModel(context: context);
   ///로그인 실패 AlertDialod 선언
+
   AlertDialog warningDialog = AlertDialog(
     title: Text('로그인 실패'),
     content: Text('로그인에 실패하였습니다')
