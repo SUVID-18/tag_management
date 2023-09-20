@@ -5,7 +5,6 @@ import 'package:tag_management/firebase_options.dart';
 import 'package:tag_management/view/login.dart';
 import 'package:tag_management/view/main_page.dart';
 import 'package:tag_management/view/management.dart';
-import 'package:tag_management/view/upload.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,17 +34,13 @@ class App extends StatelessWidget {
         //   }
         // },
         path: '/',
-        builder: (context, state) => MainPage(
+        builder: (context, state) => const MainPage(
               appName: appName,
             ),
         routes: [
           GoRoute(
-            path: 'upload',
-            builder: (context, state) => UploadPage(),
-          ),
-          GoRoute(
             path: 'management',
-            builder: (context, state) => ManagementPage(),
+            builder: (context, state) => const ManagementPage(),
           ),
         ]),
   ]);

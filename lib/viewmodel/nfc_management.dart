@@ -1,8 +1,9 @@
+import 'dart:convert';
+
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:nfc_manager/nfc_manager.dart';
 import 'package:tag_management/model/nfc.dart';
-import 'dart:convert';
 
 
 /// NFC 태그를 읽고 쓰는 기능을 담은 뷰모델
@@ -86,7 +87,7 @@ class NfcManagementViewModel {
     showDialog(
         context: context,
         builder: (context) {
-          return AlertDialog(
+          return const AlertDialog(
             content: Text("정보를 읽을 태그를 뒷면에 인식하세요"),
           );
         });
@@ -95,7 +96,9 @@ class NfcManagementViewModel {
     bool checkNfcAvailable = await NfcManager.instance.isAvailable();
     if (!checkNfcAvailable){
       Navigator.pop(context);
-      final snackBar = SnackBar(content: Text('NFC를 활성화해야 합니다.'),);
+      const snackBar = SnackBar(
+        content: Text('NFC를 활성화해야 합니다.'),
+      );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
       return;
     }
@@ -108,10 +111,10 @@ class NfcManagementViewModel {
       // 태그에 입력된 내용이 없다면 오류메세지 출력 후 return
       if (cachedMessage==null){
         showDialog(context: context, builder: (context) {
-          return AlertDialog(
-            content: Text('null 값이 들어 있습니다.'),
-          );
-        });
+              return const AlertDialog(
+                content: Text('null 값이 들어 있습니다.'),
+              );
+            });
         NfcManager.instance.stopSession();
         return;
       }
@@ -122,10 +125,10 @@ class NfcManagementViewModel {
       // id가 null이라면 오류메세지 출력 후 return
       if (id==null){
         showDialog(context: context, builder: (context) {
-          return AlertDialog(
-            content: Text('identifier가 존재하지 않습니다.'),
-          );
-        });
+              return const AlertDialog(
+                content: Text('identifier가 존재하지 않습니다.'),
+              );
+            });
         NfcManager.instance.stopSession();
         return;
       }
@@ -137,14 +140,13 @@ class NfcManagementViewModel {
       // 추후 수정된 AleryDialog가 필요할 것 같음.
       showDialog(context: context, builder: (context) {
           return AlertDialog(
-            title: Text('인식 결과'),
-            content: Column(
-              children: [
-                Text('id : ' + decodedID),
-                Text('payload : ' + decodedPayload),
-              ],
-            )
-          );
+                title: const Text('인식 결과'),
+                content: Column(
+                  children: [
+                    Text('id : $decodedID'),
+                    Text('payload : $decodedPayload'),
+                  ],
+                ));
 
         });
       NfcManager.instance.stopSession();
