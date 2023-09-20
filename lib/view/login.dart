@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../viewmodel/login.dart';
+import 'package:tag_management/viewmodel/login.dart';
 
 /// 로그인 시 나타나는 페이지 입니다.
 class LoginPage extends StatefulWidget {
@@ -12,14 +11,14 @@ class LoginPage extends StatefulWidget {
 
 
 class _LoginPageState extends State<LoginPage> {
-
+  ///뷰모델 선언
   late var viewModel = LoginViewModel(context: context);
-
+  ///로그인 실패 AlertDialod 선언
   AlertDialog warningDialog = AlertDialog(
     title: Text('로그인 실패'),
     content: Text('로그인에 실패하였습니다')
     );
-
+  ///뷰모델 적용시 필요한 함수
   @override
    void initState(){
      WidgetsBinding.instance.addObserver(viewModel);
@@ -80,11 +79,7 @@ class _LoginPageState extends State<LoginPage> {
               ButtonBar(
                 children: <Widget>[
                   // 다음 페이지로 가는 Next 버튼
-                  // 뷰모델 적용 완료
-                  ///AlertDialog warningDialog = AlertDialog(
-                    ///title: Text('로그인 실패'),
-                    ///content: Text('로그인에 실패하였습니다')
-                  ///);
+                  /// 뷰모델 적용 완료
                   ElevatedButton(
                       onPressed: ()=>  viewModel.sendCreateAccountLink(loginTextEmptyDialog: warningDialog), child: Text('Next')
                   )

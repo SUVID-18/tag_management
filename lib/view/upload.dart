@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:tag_management/viewmodel/nfc_management.dart';
+
 
 /// 태그 정보 업로드를 위한 페이지 입니다.
 /// 강의실 정보 업로드
@@ -8,6 +10,8 @@ class UploadPage extends StatefulWidget {
   @override
   State<UploadPage> createState() => _UploadPageState();
 }
+
+var viewModel = NfcManagementViewModel();
 
 class _UploadPageState extends State<UploadPage> {
 ///강의실 리스트
@@ -45,6 +49,7 @@ class _UploadPageState extends State<UploadPage> {
         itemBuilder: (context, index) {
           ///태그한 내용을 탭하여 업로드 할 수 있도록 하는 gesturedetector
           ///alertDialog를 통해 강의실 번호를 입력 받아 확인시 업로드가 된다
+          ///viewModel.tagWrite('ICT 404', context), child: Text('태그 쓰기'))
           return GestureDetector(
             onTap: (){
               showDialog(context: context,
