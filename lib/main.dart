@@ -22,10 +22,7 @@ class App extends StatelessWidget {
   final GoRouter _routes = GoRouter(routes: [
     // 앱 실행 시 가장 먼저 출력되는 페이지
 
-    GoRoute(
-      path: '/login',
-      builder: (context, state) => const LoginPage()
-    ),
+    GoRoute(path: '/login', builder: (context, state) => const LoginPage()),
 
     GoRoute(
         // 테스트를 위한 임시 비활성화
@@ -48,20 +45,19 @@ class App extends StatelessWidget {
           ),
           GoRoute(
             path: 'management',
-          builder: (context, state) => ManagementPage(),
-        ),
-      ]
-    ),
+            builder: (context, state) => ManagementPage(),
+          ),
+        ]),
   ]);
 
   @override
   Widget build(BuildContext context) {
-  return MaterialApp.router(
-    title: appName,
-    routerConfig: _routes,
-    theme: ThemeData(
-      // Material3 테마를 사용할지에 대한 여부
-        useMaterial3: true),
-  );
-}
+    return MaterialApp.router(
+      title: appName,
+      routerConfig: _routes,
+      theme: ThemeData(
+          // Material3 테마를 사용할지에 대한 여부
+          useMaterial3: true),
+    );
+  }
 }
