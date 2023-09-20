@@ -28,10 +28,4 @@ class SettingsViewModel{
     // 로그인된 사용자의 정보를 표시하는 위젯을 변경한다.
     FirebaseAuth.instance.signOut();
   }
-
-  Future<UserCredential> signUp(String email, String password) {
-    var instance = FirebaseAuth.instance;
-    return instance.createUserWithEmailAndPassword(
-        email: email, password: password);
-  }
 }

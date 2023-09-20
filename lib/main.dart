@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -25,14 +26,14 @@ class App extends StatelessWidget {
 
     GoRoute(
         // 테스트를 위한 임시 비활성화
-        // redirect: (context, state)async {
-        //   if (FirebaseAuth.instance.currentUser == null) {
-        //     return '/login';
-        //     // 로그인이 안되어있으면 출결 페이지 안띄움
-        //   } else {
-        //     return null;
-        //   }
-        // },
+        redirect: (context, state) async {
+          if (FirebaseAuth.instance.currentUser == null) {
+            return '/login';
+            // 로그인이 안되어있으면 출결 페이지 안띄움
+          } else {
+            return null;
+          }
+        },
         path: '/',
         builder: (context, state) => const MainPage(
               appName: appName,

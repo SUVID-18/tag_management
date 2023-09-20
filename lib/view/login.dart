@@ -32,10 +32,6 @@ class _LoginPageState extends State<LoginPage> {
      super.dispose();
   }
 
-  /// 아이디를 입력받는 [TextEditingController]
-  final _usernameController = TextEditingController();
-  /// 비밀번호를 입력받는 [TextEditingController]
-  final _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -58,8 +54,8 @@ class _LoginPageState extends State<LoginPage> {
             /// _usernameController 변수 사용
             SizedBox(height: 60.0,),
             TextField(
-                controller: _usernameController,
-                decoration: InputDecoration(
+            controller: viewModel.emailController,
+            decoration: InputDecoration(
                   filled: true,
                   labelText: 'ID'
                 ),
@@ -68,8 +64,8 @@ class _LoginPageState extends State<LoginPage> {
             ///obscureText 사용 비밀번호 입력시 숨김
             SizedBox(height: 12.0),
             TextField(
-              controller: _passwordController,
-              decoration: InputDecoration(
+            controller: viewModel.passwordController,
+            decoration: InputDecoration(
                 filled: true,
                 labelText: 'Password'
                 ),
@@ -82,8 +78,9 @@ class _LoginPageState extends State<LoginPage> {
                   // 다음 페이지로 가는 Next 버튼
                   /// 뷰모델 적용 완료
                   ElevatedButton(
-                      onPressed: ()=>  viewModel.sendCreateAccountLink(loginTextEmptyDialog: warningDialog), child: Text('Next')
-                  )
+                  onPressed: () =>
+                      viewModel.signUp(loginTextEmptyDialog: warningDialog),
+                  child: Text('Next'))
                 ],
               ),
             /// 하단 로고

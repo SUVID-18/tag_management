@@ -10,9 +10,12 @@ class LoginViewModel with WidgetsBindingObserver {
   // 이 때, context를 제공해야 오류가 발생하지 않는다.
   BuildContext context;
 
-  final _emailControllerText = TextEditingController();
-  TextEditingController get emailControllerText => _emailControllerText;
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
 
+  TextEditingController get emailController => _emailController;
+
+  TextEditingController get passwordController => _passwordController;
 
   LoginViewModel._privateConstructor({required this.context}) {
     // 기존에 저장된 이메일이 있다면 바로 로그인을 진행한다.
@@ -23,7 +26,7 @@ class LoginViewModel with WidgetsBindingObserver {
     SharedPreferences.getInstance().then((sharedPreferences) {
       var savedEmail = sharedPreferences.getString('email');
       if (savedEmail != null) {
-        _emailControllerText.text = savedEmail;
+        _emailController.text = savedEmail;
       }
     });
 
@@ -82,7 +85,7 @@ class LoginViewModel with WidgetsBindingObserver {
       case AppLifecycleState.resumed:
 
         SharedPreferences.getInstance().then((sharedPref) {
-          emailControllerText.text = sharedPref.getString('email')!;
+          emailController.text = sharedPref.getString('email')!;
         });
 
         try{
@@ -97,7 +100,7 @@ class LoginViewModel with WidgetsBindingObserver {
 
       case AppLifecycleState.inactive:
         final SharedPreferences prefs = await SharedPreferences.getInstance();
-        prefs.setString('email', _emailControllerText.text);
+        prefs.setString('email', _emailController.text);
         break;
 
       default:
@@ -124,7 +127,7 @@ class LoginViewModel with WidgetsBindingObserver {
   void sendCreateAccountLink(
       {required AlertDialog loginTextEmptyDialog}) async {
     // 이메일 링크를 만드는 정보를 담은 ActionCodeSettings 객체를 생성한다.
-    if (emailControllerText.text.isEmpty) {
+    if (emailController.text.isEmpty) {
       showDialog(
         context: context,
         builder: (context) => loginTextEmptyDialog,
@@ -141,7 +144,7 @@ class LoginViewModel with WidgetsBindingObserver {
       );
 
       // 위 ActionCodeSettings에 규정된 규칙대로, emailAuth 주소에 인증 요청 메일을 보내는 sendSignInLinkToEmail 함수를 호출한다.
-      var emailAuth = emailControllerText.text;
+      var emailAuth = emailController.text;
       FirebaseAuth.instance.sendSignInLinkToEmail(
           email: emailAuth, actionCodeSettings: acs)
           .catchError((onError) {
@@ -161,7 +164,7 @@ class LoginViewModel with WidgetsBindingObserver {
       // 로그인을 진행함.
       await FirebaseAuth.instance.signInWithEmailLink(
         // 기존에 저장된 데이터가 있다면, 함수 호출 이전에 초기화 시켜줘야 한다.
-          email: emailControllerText.text,
+          email: emailController.text,
           emailLink: dynamicLinkData.link.toString()
       );
 
@@ -174,6 +177,43 @@ class LoginViewModel with WidgetsBindingObserver {
     catch (identifier) {
       ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text('로그인에 실패하였습니다.')));
+    }
+  }
+
+  /// 이메일과 비밀번호로 로그인을 진행하는 메서드
+  ///
+  /// [TextEditingController]를 통해 전달받은 이메일과 비밀번호를 통해 로그인을 진행한다.
+  ///
+  /// ```dart
+  ///     ElevatedButton(
+  ///         onPressed: () => viewModel.signUp(loginTextEmptyDialog: warningDialog), child: Text('Next')
+  ///     )
+  /// ```
+  void signUp({required AlertDialog loginTextEmptyDialog}) async {
+    if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
+      showDialog(
+        context: context,
+        builder: (context) => loginTextEmptyDialog,
+      );
+      return;
+    }
+    var instance = FirebaseAuth.instance;
+    if (context.mounted) {
+      showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (context) => const AlertDialog(
+          content: Row(
+            children: [CircularProgressIndicator(), Text('로그인 중...')],
+          ),
+        ),
+      );
+    }
+    await instance.signInWithEmailAndPassword(
+        email: _emailController.text, password: _passwordController.text);
+    if (context.mounted) {
+      context.pop();
+      context.go('/');
     }
   }
 }

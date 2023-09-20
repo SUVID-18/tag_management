@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:tag_management/viewmodel/settings.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -33,26 +32,6 @@ class _SettingsPageState extends State<SettingsPage> {
             title: const Text('비밀번호 변경'),
             onTap: () {
               /// 비밀번호 변경 로직 구현 필요
-            },
-          ),
-          ListTile(
-            title: const Text('계정생성'),
-            onTap: () {
-              showDialog(
-                context: context,
-                builder: (context) => const AlertDialog(
-                  title: Row(
-                    children: [
-                      CircularProgressIndicator(),
-                      Text('계정 생성 중....')
-                    ],
-                  ),
-                ),
-              );
-              viewModel.signUp('test_dev@suvid.com', 'admin!').then((value) {
-                context.pop();
-                print('user info: $value');
-              });
             },
           ),
           ListTile(
