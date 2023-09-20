@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter/material.dart';
 
 class LoginViewModel with WidgetsBindingObserver {
 
@@ -172,11 +172,8 @@ class LoginViewModel with WidgetsBindingObserver {
 
     // 주어진 링크가 로그인 링크가 아닐 경우
     catch (identifier) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-            content: Text('로그인에 실패하였습니다.')
-        )
-      );
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text('로그인에 실패하였습니다.')));
     }
   }
 }

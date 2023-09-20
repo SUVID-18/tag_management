@@ -49,7 +49,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                   showDialog(
                     context: context,
                     builder: (context) {
-                      return AlertDialog(
+                      return const AlertDialog(
                         title: Text('새 강의실 이름 입력'),
                         content: TextField(),
                         actions: [
@@ -67,8 +67,8 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
               ),
             ),
           ),
-          ManagementPage(),
-          SettingsPage(),
+          const ManagementPage(),
+          const SettingsPage(),
         ]));
   }
 }
