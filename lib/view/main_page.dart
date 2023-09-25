@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 /// 홈 화면을 나타내는 페이지 입니다.
 
@@ -16,7 +17,6 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +39,19 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                   child: Text("환경 설정")
               ),
             ],
+            onTap: (index){
+              switch(index){
+                case 0:
+                  context.go('/upload');
+                  break;
+                case 1:
+                  context.go('/management');
+                  break;
+                case 2:
+                  context.go('/settings');
+                  break;
+              }
+            },
           ),
         ),
 
