@@ -113,8 +113,8 @@ class NfcManagementViewModel {
         showDialog(context: context, builder: (context) {
               return const AlertDialog(
                 content: Text('null 값이 들어 있습니다.'),
-          );
-        });
+              );
+            });
         NfcManager.instance.stopSession();
         return;
       }
@@ -127,8 +127,8 @@ class NfcManagementViewModel {
         showDialog(context: context, builder: (context) {
               return const AlertDialog(
                 content: Text('identifier가 존재하지 않습니다.'),
-          );
-        });
+              );
+            });
         NfcManager.instance.stopSession();
         return;
       }
@@ -142,12 +142,11 @@ class NfcManagementViewModel {
           return AlertDialog(
                 title: const Text('인식 결과'),
                 content: Column(
-              children: [
+                  children: [
                     Text('id : $decodedID'),
                     Text('payload : $decodedPayload'),
                   ],
-            )
-          );
+                ));
 
         });
       NfcManager.instance.stopSession();

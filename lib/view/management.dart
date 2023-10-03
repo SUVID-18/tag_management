@@ -1,129 +1,83 @@
 import 'package:flutter/material.dart';
+import 'package:tag_management/model/nfc.dart';
+import 'package:tag_management/viewmodel/management.dart';
 
-/// 서버에 기등록된 강의실 정보를 변경하는 페이지 입니다.
 class ManagementPage extends StatefulWidget {
-  const ManagementPage({Key? key}) : super(key: key);
+  const ManagementPage({super.key});
 
   @override
   State<ManagementPage> createState() => _ManagementPageState();
 }
 
 class _ManagementPageState extends State<ManagementPage> {
+  late var viewModel = ManagementViewModel(context: context);
 
-  final TextEditingController _titleEditingController =
-  TextEditingController();
-  final TextEditingController _contentEditingController =
-  TextEditingController();
-
-  final List<CardData> _cardDataList = [
-    CardData(title: '고혁진', content: '105호'),
-    CardData(title: '장성태', content: '418호'),
-    CardData(title: '박필성', content: '108호'),
-    CardData(title: '조영일', content: '517호'),
-  ];
-
-  void _showEditDialog(int index) {
-    /// 강의실 정보 수정을 위해 alertDialog를 띄웁니다.
-    /// 데이터베이스로부터 받아온 _cardDataList 정보를 각 컨트롤러에 담아 화면에 표시합니다.
-    _titleEditingController.text = _cardDataList[index].title;
-    _contentEditingController.text = _cardDataList[index].content;
-
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text('Edit Content'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                controller: _titleEditingController,
-                decoration: const InputDecoration(
-                  hintText: 'Enter new title',
-                ),
-              ),
-              const SizedBox(height: 8),
-              TextField(
-                controller: _contentEditingController,
-                decoration: const InputDecoration(
-                  hintText: 'Enter new content',
-                ),
-              ),
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () {
-                setState(() {
-                  _cardDataList[index].title = _titleEditingController.text;
-                  _cardDataList[index].content =
-                      _contentEditingController.text;
-                });
-                Navigator.pop(context);
-              },
-              child: const Text('Save'),
-            ),
-          ],
-        );
-      },
-    );
-  }
+  final _roomNumberController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    var dataList = viewModel.getNfcTagList();
     return Scaffold(
       appBar: AppBar(
-        title: const Text('강의실 정보 수정 페이지'),
+        title: const Text('NFC Tag '),
       ),
-      body: ListView.builder(
-        itemCount: _cardDataList.length,
-        itemBuilder: (context, index) {
-          return Card(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                ListTile(
-                  title: Text(_cardDataList[index].title),
-                  subtitle: Text(_cardDataList[index].content),
-                ),
-                ButtonBar(
-                  children: [
-                    TextButton(
-                      onPressed: () {
-                        _showEditDialog(index);
-                      },
-                      child: const Text('Edit'),
+      body: FutureBuilder<List<NfcObject>>(
+          future: dataList,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return Center(
+                child: Text(snapshot.error.toString()),
+              );
+            } else if (snapshot.data == null) {
+              return const Center(
+                child: Text('데이터 없음'),
+              );
+            } else {
+              return ListView.builder(
+                ///리스트의 길이 만큼 카운트
+                itemCount: snapshot.data!.length,
+
+                ///위젯을 인덱스 만큼 만들도록 함
+                itemBuilder: (context, index) {
+                  ///태그한 내용을 탭하여 업로드 할 수 있도록 하는 gesturedetector
+                  ///alertDialog를 통해 강의실 번호를 입력 받아 확인시 업로드가 된다
+                  return GestureDetector(
+                    onTap: () {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) => AlertDialog(
+                                  title: const Text("업로드 정보"),
+                                  content: TextField(
+                                    controller: _roomNumberController,
+                                    decoration: const InputDecoration(
+                                        filled: true, labelText: '강의실 번호'),
+                                  ),
+
+                                  ///확인 버튼임
+                                  //아직 입력 받아 리스트에 추가하는것 구현 안함
+                                  actions: <Widget>[
+                                    TextButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: const Text('확인'))
+                                  ]));
+                    },
+                    //호수와 고유번호가 보임
+                    child: Column(
+                      children: [
+                        Text(snapshot.data![index].lectureRoom),
+                      ],
                     ),
-                  ],
-                ),
-              ],
-            ),
-          );
-        },
-      ),
+                  );
+                },
+              );
+            }
+          }),
     );
   }
-
-  @override
-  void dispose() {
-    _titleEditingController.dispose();
-    _contentEditingController.dispose();
-    super.dispose();
-  }
 }
 
-class CardData {
-  String title;
-  String content;
-
-  CardData({
-    required this.title,
-    required this.content,
-  });
-}
+/// 태그 조회 및 강의실 정보 변경 기능을 수행하는 뷰모델 클래스
