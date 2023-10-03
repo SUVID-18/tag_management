@@ -17,7 +17,7 @@ class SettingsViewModel {
   /// SettingsViewModel의 생성자이다.
   ///
   /// ```dart
-  /// viewmodel = SettingsViewModel();
+  /// late viewmodel = SettingsViewModel();
   /// ```
   factory SettingsViewModel({required BuildContext context}) =>
       SettingsViewModel._privateConstructor(context: context);
@@ -27,8 +27,10 @@ class SettingsViewModel {
   late final String _userName;
   late final String _userEmail;
 
+  @Deprecated('해당 필드는 더 이상 사용할 수 없습니다. 대신 getSupervisor메서드를 사용하세요')
   String get userName => _userName;
 
+  @Deprecated('해당 필드는 더 이상 사용할 수 없습니다. 대신 getSupervisor메서드를 사용하세요')
   String get userEmail => _userEmail;
 
   /// 앱에서 로그아웃을 하는 메서드.
@@ -40,13 +42,11 @@ class SettingsViewModel {
   ///
   /// 프론트 입장에선 따로 뺑글이가 안돌아가면 좋을 것.
   void logout(BuildContext context) {
-    showDialog(
-        context: context,
-        builder: (context) =>
-            SnackBar(content: Text('로그아웃 중입니다.. 로그아웃 후 메인 페이지로 이동합니다.')));
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('로그아웃 중입니다.. 로그아웃 후 메인 페이지로 이동합니다.')));
     // 로그인된 사용자의 정보를 표시하는 위젯을 변경한다.
     FirebaseAuth.instance.signOut().then((_) {
-      context.go('/');
+      context.go('/login');
     });
   }
 
