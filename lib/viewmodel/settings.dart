@@ -6,24 +6,24 @@ import 'package:tag_management/model/supervisor.dart';
 
 /// 설정 페이지의 백엔드 동작을 담고 있는 뷰모델 클래스.
 class SettingsViewModel {
-  // 싱글톤 패턴 선언부
 
-  // TODO: 주석 변경
-  // context 추가
+  /// 위젯을 띄우기 위한 context. 뷰모델 호출 시 매개변수로 context를 받아온다.
   BuildContext context;
+
+  // 싱글톤 패턴 선언부
 
   SettingsViewModel._privateConstructor({required this.context});
 
   /// SettingsViewModel의 생성자이다.
   ///
+  /// 뷰모델의 [getSupervisorInfo] 메서드를 사용하기 위해서 FutureBuilder를 사용해야 한다.
   /// ```dart
-  /// late viewmodel = SettingsViewModel();
+  /// late var viewmodel = SettingsViewModel(context);
   /// ```
   factory SettingsViewModel({required BuildContext context}) =>
       SettingsViewModel._privateConstructor(context: context);
 
-  // 설정 페이지에 띄워야 할 정보는 관리자의 아이디, 이름, 로그인 된 상태이다.
-  // 추가적-*인 설정은 필요하면 추가할 예정이므로 그대로 둔다.
+  // 관리자의 이름과 이메일을 받는 String 변수이다. Supervisor 모델을 사용하면 되며, 현재는 Deprecated 처리되었다.
   late final String _userName;
   late final String _userEmail;
 
@@ -35,12 +35,16 @@ class SettingsViewModel {
 
   /// 앱에서 로그아웃을 하는 메서드.
   ///
-  /// 로그아웃 버튼을 누르면 로그아웃을 실행해야 함.
-  /// 로그아웃 메세지 띄우기
-  /// 로그아웃 진행/*
-  /// 페이지 이동
+  /// 설정 페이지에서 로그아웃 버튼의 [onPressed]에 할당한다.
   ///
-  /// 프론트 입장에선 따로 뺑글이가 안돌아가면 좋을 것.
+  /// ```dart
+  ///
+  /// late var viewModel = SettingsViewModel(context);
+  /// ...(생략)
+  ///   onPressed : () {
+  ///     viewModel.logout();
+  ///   }
+  /// ```
   void logout(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('로그아웃 중입니다.. 로그아웃 후 메인 페이지로 이동합니다.')));
@@ -50,7 +54,20 @@ class SettingsViewModel {
     });
   }
 
-  // 관리자의 정보를 좀 생각해 봐야 할 듯. 이름만 넣는 것을 우선으로 생각.
+  /// 로그인 완료 후 설정 페이지에서 관리자의 정보를 출력하기 위해 정보를 가져오는 메서드.
+  ///
+  /// 해당 기능을 사용하기 위해서 [Supervisor] 모델을 import 해야 한다.
+  /// [Supervisor] 객체를 생성하여 정보를 받거나, [FutureBuilder]를 이용해 [Snapshot]에 해당 메서드를 이용해도 된다.
+  ///
+  ///
+  /// ```dart
+  /// late var viewModel = SettingsViewModel(context);
+  ///
+  /// ...(생략)
+  /// FutureBuilder<Supervisor?>(
+  ///   future: viewModel.getSupervisorInfo(),
+  /// )
+  /// ```
   Future<Supervisor?> getSupervisorInfo() async {
     var user = FirebaseAuth.instance.currentUser;
     if (user != null) {

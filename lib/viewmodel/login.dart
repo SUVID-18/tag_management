@@ -8,6 +8,8 @@ class LoginViewModel with WidgetsBindingObserver {
 
   // 뷰모델에서 프론트 팀이 위젯을 작업하는 것을 막기 위해서 AlertDialog 등을 매개변수로 넘겨야 할 필요가 있음.
   // 이 때, context를 제공해야 오류가 발생하지 않는다.
+
+  /// 위젯을 띄우기 위한 context
   BuildContext context;
 
   final _emailController = TextEditingController();
