@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tag_management/model/nfc.dart';
 import 'package:tag_management/viewmodel/management.dart';
 
@@ -12,6 +13,7 @@ class ManagementPage extends StatefulWidget {
 class _ManagementPageState extends State<ManagementPage> {
   late var viewModel = ManagementViewModel(context: context);
 
+  /// 새로운 강의실 이름을 입력받는 컨트롤러
   final _roomNumberController = TextEditingController();
 
   @override
@@ -45,19 +47,55 @@ class _ManagementPageState extends State<ManagementPage> {
                       showDialog(
                           context: context,
                           builder: (BuildContext context) => AlertDialog(
-                                  title: const Text("업로드 정보"),
+                                  title: const Text('업로드 정보'),
                                   content: TextField(
                                     controller: _roomNumberController,
                                     decoration: const InputDecoration(
-                                        filled: true, labelText: '강의실 번호'),
+                                        filled: true, labelText: '새로운 강의실 이름'),
                                   ),
-
-                                  ///확인 버튼임
-                                  //아직 입력 받아 리스트에 추가하는것 구현 안함
                                   actions: <Widget>[
                                     TextButton(
-                                        onPressed: () {
-                                          Navigator.pop(context);
+                                        onPressed: () async {
+                                          if (_roomNumberController
+                                              .text.isEmpty) {
+                                            showDialog(
+                                              context: context,
+                                              builder: (context) => AlertDialog(
+                                                title: const Text('경고'),
+                                                content: const Text(
+                                                    '강의실 이름을 입력하지 않았습니다.'),
+                                                actions: [
+                                                  TextButton(
+                                                      onPressed: () =>
+                                                          context.pop(),
+                                                      child: const Text('확인'))
+                                                ],
+                                              ),
+                                            );
+                                          } else {
+                                            showDialog(
+                                              barrierDismissible: false,
+                                              context: context,
+                                              builder: (context) =>
+                                                  const AlertDialog(
+                                                content: Row(
+                                                  children: [
+                                                    CircularProgressIndicator(),
+                                                    Text('작업 중....')
+                                                  ],
+                                                ),
+                                              ),
+                                            );
+                                            await viewModel.editNfcTag(
+                                                context: context,
+                                                tag: snapshot.data![index],
+                                                newLectureRoom:
+                                                    _roomNumberController.text);
+                                            if (context.mounted) {
+                                              context.pop();
+                                              context.pop();
+                                            }
+                                          }
                                         },
                                         child: const Text('확인'))
                                   ]));
