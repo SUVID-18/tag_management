@@ -1,74 +1,106 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tag_management/view/management.dart';
 import 'package:tag_management/view/settings.dart';
+import 'package:tag_management/viewmodel/nfc_management.dart';
 
 /// 홈 화면을 나타내는 페이지 입니다.
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key, required String appName}) : super(key: key);
+
   @override
   State<MainPage> createState() => _MainPageState();
 }
 
-class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
-  late TabController _tabController;
-
-  @override
-  void initState() {
-    super.initState();
-    _tabController = TabController(length: 3, vsync: this);
-  }
-
+class _MainPageState extends State<MainPage> {
+  int _selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
+    var navgationList = [
+      const NavigationRailDestination(
+          icon: Icon(Icons.sticky_note_2), label: Text('스티커 등록')),
+      const NavigationRailDestination(
+          icon: Icon(Icons.pan_tool), label: Text('기존 정보 관리')),
+      const NavigationRailDestination(
+          icon: Icon(Icons.settings), label: Text('환경 설정')),
+    ];
+
+    var viewModel = NfcManagementViewModel();
+
     return Scaffold(
         appBar: AppBar(
           title: const Text('TAG 유지보수'),
-          bottom: TabBar(
-            controller: _tabController,
-            tabs: const <Widget>[
-              Tab(icon: Icon(Icons.sticky_note_2), child: Text("스티커 등록")),
-              Tab(icon: Icon(Icons.pan_tool), child: Text("기존 정보 관리")),
-              Tab(
-                icon: Icon(Icons.settings),
-                  child: Text("환경 설정")
-              ),
-            ],
-          ),
         ),
-        body: TabBarView(controller: _tabController, children: [
-          Center(
-            child: Card(
-              clipBehavior: Clip.hardEdge,
-              child: InkWell(
-                splashColor: Colors.blue.withAlpha(30),
-                onTap: () {
-                  ///탭 동작 수행
-                  debugPrint('Card tapped.');
-                  showDialog(
-                    context: context,
-                    builder: (context) {
-                      return const AlertDialog(
-                        title: Text('새 강의실 이름 입력'),
-                        content: TextField(),
-                        actions: [
-                          TextButton(onPressed: null, child: Text('확인'))
-                        ],
-                      );
-                    },
-                  );
-                },
-                child: SizedBox(
-                  width: 500,
-                  height: 500,
-                  child: Image.asset('assets/images/swu_bluelogo.png'),
-                ),
-              ),
+        body: Row(
+          children: [
+            NavigationRail(
+              labelType: NavigationRailLabelType.selected,
+              destinations: navgationList,
+              selectedIndex: _selectedIndex,
+              onDestinationSelected: (value) => setState(() {
+                _selectedIndex = value;
+              }),
             ),
-          ),
-          const ManagementPage(),
-          const SettingsPage(),
-        ]));
+            if (_selectedIndex == 0) ...[
+              Flexible(
+                child: Center(
+                  child: OutlinedButton(
+                    child: const Icon(Icons.add_circle_outline),
+                    onPressed: () {
+                      {
+                        var textController = TextEditingController();
+
+                        ///탭 동작 수행
+                        debugPrint('Card tapped.');
+                        showDialog(
+                          context: context,
+                          builder: (dialogContext) {
+                            return AlertDialog(
+                              title: const Text('새 강의실 이름 입력'),
+                              content: TextField(
+                                controller: textController,
+                              ),
+                              actions: [
+                                TextButton(
+                                    onPressed: () {
+                                      if (textController.text.isEmpty) {
+                                        showDialog(
+                                          context: dialogContext,
+                                          builder: (context) => AlertDialog(
+                                            title: const Text('경고'),
+                                            content: const Text(
+                                                '강의실 이름을 입력하지 않았습니다.'),
+                                            actions: [
+                                              TextButton(
+                                                  onPressed: () =>
+                                                      context.pop(),
+                                                  child: const Text('확인'))
+                                            ],
+                                          ),
+                                        );
+                                      } else {
+                                        viewModel.tagWrite(
+                                            textController.text, context);
+                                      }
+                                    },
+                                    child: const Text('확인'))
+                              ],
+                            );
+                          },
+                        );
+                      }
+                    },
+                  ),
+                ),
+              )
+            ] else if (_selectedIndex == 1) ...[
+              const Flexible(child: ManagementPage())
+            ] else ...[
+              const Flexible(child: SettingsPage())
+            ]
+          ],
+        ));
   }
 }

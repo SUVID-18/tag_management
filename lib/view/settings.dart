@@ -6,16 +6,11 @@ class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
 
   @override
-  _SettingsPageState createState() => _SettingsPageState();
+  State<SettingsPage> createState() => _SettingsPageState();
 }
 
 class _SettingsPageState extends State<SettingsPage> {
   late SettingsViewModel viewModel = SettingsViewModel(context: context);
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,15 +33,17 @@ class _SettingsPageState extends State<SettingsPage> {
                 }
               }),
           const SizedBox(height: 5),
-          const Text('정보수정', style: TextStyle(fontSize: 20)),
           ListTile(
-            title: const Text('비밀번호 변경'),
+            title: const Text('이름 변경'),
             onTap: () {
               /// 비밀번호 변경 로직 구현 필요
             },
           ),
           ListTile(
-            title: const Text('로그아웃'),
+            title: const Text(
+              '로그아웃',
+              style: TextStyle(color: Colors.redAccent),
+            ),
             onTap: () => viewModel.logout(context),
           ),
         ],

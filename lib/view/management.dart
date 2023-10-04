@@ -18,9 +18,6 @@ class _ManagementPageState extends State<ManagementPage> {
   Widget build(BuildContext context) {
     var dataList = viewModel.getNfcTagList();
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('NFC Tag '),
-      ),
       body: FutureBuilder<List<NfcObject>>(
           future: dataList,
           builder: (context, snapshot) {
@@ -66,10 +63,15 @@ class _ManagementPageState extends State<ManagementPage> {
                                   ]));
                     },
                     //호수와 고유번호가 보임
-                    child: Column(
-                      children: [
-                        Text(snapshot.data![index].lectureRoom),
-                      ],
+                    child: Card(
+                      child: Column(
+                        children: [
+                          Text(
+                            snapshot.data![index].lectureRoom,
+                            style: Theme.of(context).textTheme.headlineMedium,
+                          ),
+                        ],
+                      ),
                     ),
                   );
                 },
