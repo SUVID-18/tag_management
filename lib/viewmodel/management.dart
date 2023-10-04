@@ -67,8 +67,8 @@ class ManagementViewModel {
     var db = FirebaseFirestore.instance.collection('classroom');
 
     // 특정 객체의 내용을 데이터베이스 수정.
-    var queryTag = await db.where('uuid', isEqualTo: tag.uuid).get();
-    return queryTag.docs.first.reference.update({"lectureRoom": newLectureRoom});
+    var queryTag = await db.where('tag_uuid', isEqualTo: tag.uuid).get();
+    return queryTag.docs.first.reference.update({'name': newLectureRoom});
 
     // 데이터베이스와 통신한 후 변경된 내용을 반영해야 하므로 view의 상태 또한 새로고침할 필요가 있다.
     // 해당 내용은 나중에 진행할 예정.
