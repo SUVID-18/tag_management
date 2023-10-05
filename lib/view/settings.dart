@@ -16,38 +16,36 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(15),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text('환영합니다.', style: TextStyle(fontSize: 20)),
-          FutureBuilder<Supervisor?>(
-              future: viewModel.getSupervisorInfo(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return CircularProgressIndicator();
-                } else if (snapshot.data == null) {
-                  return Text('Unknown user 님');
-                } else {
-                  return Text('${snapshot.data!.name} 님',
-                      style: const TextStyle(fontSize: 20));
-                }
-              }),
-          const SizedBox(height: 5),
-          ListTile(
-            title: const Text('이름 변경'),
-            onTap: () {
-              /// 비밀번호 변경 로직 구현 필요
-            },
-          ),
-          ListTile(
-            title: const Text(
-              '로그아웃',
-              style: TextStyle(color: Colors.redAccent),
-            ),
-            onTap: () => viewModel.logout(context),
-          ),
-        ],
-      ),
+      child: FutureBuilder<Supervisor?>(
+          future: viewModel.getSupervisorInfo(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            } else {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text('환영합니다.', style: TextStyle(fontSize: 20)),
+                  Text('${snapshot.data?.name ?? '(알 수 없음)'} 님',
+                      style: const TextStyle(fontSize: 20)),
+                  const SizedBox(height: 5),
+                  ListTile(
+                    title: const Text('이름 변경'),
+                    onTap: () {
+                      /// 이름 변경 로직 구현 필요
+                    },
+                  ),
+                  ListTile(
+                    title: const Text(
+                      '로그아웃',
+                      style: TextStyle(color: Colors.redAccent),
+                    ),
+                    onTap: () => viewModel.logout(context),
+                  ),
+                ],
+              );
+            }
+          }),
     );
   }
 }
