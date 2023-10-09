@@ -20,11 +20,12 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     var navgationList = [
       const NavigationRailDestination(
-          icon: Icon(Icons.sticky_note_2), label: Text('스티커 등록')),
+          icon: Icon(Icons.sticky_note_2_outlined), label: Text('스티커 등록')),
       const NavigationRailDestination(
-          icon: Icon(Icons.pan_tool), label: Text('기존 정보 관리')),
+          icon: Icon(Icons.pan_tool_alt_outlined), label: Text('기존 정보 관리')),
       const NavigationRailDestination(
-          icon: Icon(Icons.settings), label: Text('환경 설정')),
+          icon: Icon(Icons.supervised_user_circle_outlined),
+          label: Text('사용자 설정')),
     ];
 
     var viewModel = NfcManagementViewModel();
