@@ -5,7 +5,6 @@ import 'package:tag_management/view/settings.dart';
 import 'package:tag_management/viewmodel/nfc_management.dart';
 
 /// 홈 화면을 나타내는 페이지 입니다.
-
 class MainPage extends StatefulWidget {
   const MainPage({Key? key, required String appName}) : super(key: key);
 
@@ -22,7 +21,7 @@ class _MainPageState extends State<MainPage> {
       const NavigationRailDestination(
           icon: Icon(Icons.sticky_note_2_outlined), label: Text('스티커 등록')),
       const NavigationRailDestination(
-          icon: Icon(Icons.pan_tool_alt_outlined), label: Text('기존 정보 관리')),
+          icon: Icon(Icons.pan_tool_alt_outlined), label: Text('강의실 관리')),
       const NavigationRailDestination(
           icon: Icon(Icons.supervised_user_circle_outlined),
           label: Text('사용자 설정')),

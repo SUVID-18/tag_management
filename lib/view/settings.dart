@@ -30,12 +30,6 @@ class _SettingsPageState extends State<SettingsPage> {
                       style: const TextStyle(fontSize: 20)),
                   const SizedBox(height: 5),
                   ListTile(
-                    title: const Text('이름 변경'),
-                    onTap: () {
-                      /// 이름 변경 로직 구현 필요
-                    },
-                  ),
-                  ListTile(
                     title: const Text(
                       '로그아웃',
                       style: TextStyle(color: Colors.redAccent),

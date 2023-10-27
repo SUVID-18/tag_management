@@ -7,7 +7,7 @@ import 'package:tag_management/view/login.dart';
 import 'package:tag_management/view/main_page.dart';
 import 'package:tag_management/view/management.dart';
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(App());

@@ -47,7 +47,7 @@ class _ManagementPageState extends State<ManagementPage> {
                       showDialog(
                           context: context,
                           builder: (BuildContext context) => AlertDialog(
-                                  title: const Text('업로드 정보'),
+                                  title: const Text('강의실 정보 변경'),
                                   content: TextField(
                                     controller: _roomNumberController,
                                     decoration: const InputDecoration(
