@@ -12,6 +12,8 @@ class ManagementViewModel {
   // 싱글톤 패턴 선언부
   BuildContext context;
 
+  /// 새로운 강의실 이름을 입력받는 컨트롤러
+  final roomNumberController = TextEditingController();
   ManagementViewModel._privateConstructor({required this.context});
 
   /// ManagementViewModel의 생성자이다.
@@ -58,9 +60,7 @@ class ManagementViewModel {
   /// });
   /// ```
   Future<void> editNfcTag (
-      {required BuildContext context,
-      required NfcObject tag,
-      required newLectureRoom}) async{
+      {required BuildContext context, required NfcObject tag}) async {
     // firestore에 접근해 입력받은 데이터를 전달하는 코드를 추후에 추가 예정.
 
     // 태그 테이블 정보 가져오기.
@@ -68,6 +68,8 @@ class ManagementViewModel {
 
     // 특정 객체의 내용을 데이터베이스 수정.
     var queryTag = await db.where('tag_uuid', isEqualTo: tag.uuid).get();
+    var newLectureRoom = roomNumberController.text;
+    roomNumberController.text = '';
     return queryTag.docs.first.reference.update({'name': newLectureRoom});
 
     // 데이터베이스와 통신한 후 변경된 내용을 반영해야 하므로 view의 상태 또한 새로고침할 필요가 있다.

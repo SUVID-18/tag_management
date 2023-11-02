@@ -13,9 +13,6 @@ class ManagementPage extends StatefulWidget {
 class _ManagementPageState extends State<ManagementPage> {
   late var viewModel = ManagementViewModel(context: context);
 
-  /// 새로운 강의실 이름을 입력받는 컨트롤러
-  final _roomNumberController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     var dataList = viewModel.getNfcTagList();
@@ -50,14 +47,14 @@ class _ManagementPageState extends State<ManagementPage> {
                                   title: Text(
                                       '강의실 정보 변경(이전 이름: ${snapshot.data?[index].lectureRoom})'),
                                   content: TextField(
-                                    controller: _roomNumberController,
+                                    controller: viewModel.roomNumberController,
                                     decoration: const InputDecoration(
                                         filled: true, labelText: '새로운 강의실 이름'),
                                   ),
                                   actions: <Widget>[
                                     TextButton(
                                         onPressed: () async {
-                                          if (_roomNumberController
+                                          if (viewModel.roomNumberController
                                               .text.isEmpty) {
                                             showDialog(
                                               context: context,
@@ -88,10 +85,9 @@ class _ManagementPageState extends State<ManagementPage> {
                                               ),
                                             );
                                             await viewModel.editNfcTag(
-                                                context: context,
-                                                tag: snapshot.data![index],
-                                                newLectureRoom:
-                                                    _roomNumberController.text);
+                                              context: context,
+                                              tag: snapshot.data![index],
+                                            );
                                             if (context.mounted) {
                                               context.pop();
                                               context.pop();
