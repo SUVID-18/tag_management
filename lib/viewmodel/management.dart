@@ -29,7 +29,7 @@ class ManagementViewModel {
   /// List<NfcObject> _cardDataList = [];
   /// _cardDataList = viewmodel.getNfcTagList();
   /// ```
-  Future<List<NfcObject>> getNfcTagList() async {
+  Stream<List<NfcObject>> getNfcTagList() async* {
     // firestore에 접근하여 모든 데이터를 끌어온다.
     var db = FirebaseFirestore.instance;
     List<NfcObject> tagList = [];
@@ -44,7 +44,7 @@ class ManagementViewModel {
       debugPrint("스택 추적 : $stackTrace");
     });
 
-    return tagList;
+    yield tagList;
   }
 
   /// 데이터베이스의 강의실 정보를 변경하는 메서드.
