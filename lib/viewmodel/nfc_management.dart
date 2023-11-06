@@ -1,10 +1,10 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:nfc_manager/nfc_manager.dart';
 import 'package:tag_management/model/nfc.dart';
-
 
 /// NFC 태그를 읽고 쓰는 기능을 담은 뷰모델
 class NfcManagementViewModel {
@@ -25,8 +25,6 @@ class NfcManagementViewModel {
     // 정보를 입력할 NFC 객체 생성
     NfcObject nfcObject = NfcObject(lectureRoom: lectureRoom);
 
-    // 데이터베이스 수정을 위한 객체. 아직 사용 안함.
-    Map<String, dynamic> json = nfcObject.toJson();
 
     final dynamicLinkParams = DynamicLinkParameters(
       link: Uri(
@@ -60,17 +58,22 @@ class NfcManagementViewModel {
     NfcManager.instance.startSession(onDiscovered: (NfcTag tag) async {
       var ndef = Ndef.from(tag);
 
-      ndef?.write(message).then((value) {
+      try {
+        ndef?.write(message);
         NfcManager.instance.stopSession();
         Navigator.pop(context);
         ScaffoldMessenger.of(context)
             .showSnackBar(const SnackBar(content: Text('태그 기입 완료')));
-      }).catchError((_) {
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('태그 기입이 완료되지 않았습니다. 다시 시도하세요')));
-      });
-
-      // firestore 데이터베이스에 기록 부분은 생략.
+        await FirebaseFirestore.instance.collection('classroom').add({
+          'name': nfcObject.lectureRoom,
+          'tag_uuid': nfcObject.uuid,
+        });
+      } catch (_) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('태그 기입이 완료되지 않았습니다. 다시 시도하세요')));
+        }
+      }
     });
   }
 
@@ -83,7 +86,7 @@ class NfcManagementViewModel {
   ///   viewmodel.tagRead(context);
   /// }
   /// ```
-  Future<void> tagRead(BuildContext context) async{
+  Future<void> tagRead(BuildContext context) async {
     showDialog(
         context: context,
         builder: (context) {
@@ -94,23 +97,28 @@ class NfcManagementViewModel {
 
     // NFC 활성화 여부 확인
     bool checkNfcAvailable = await NfcManager.instance.isAvailable();
-    if (!checkNfcAvailable){
-      Navigator.pop(context);
+    if (!checkNfcAvailable) {
+      if (context.mounted) {
+        Navigator.pop(context);
+      }
       const snackBar = SnackBar(
         content: Text('NFC를 활성화해야 합니다.'),
       );
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }
       return;
     }
 
-
-    NfcManager.instance.startSession(onDiscovered: (tag) async{
+    NfcManager.instance.startSession(onDiscovered: (tag) async {
       Navigator.pop(context);
       var cachedMessage = tag.data['ndef']['cachedMessage'];
 
       // 태그에 입력된 내용이 없다면 오류메세지 출력 후 return
-      if (cachedMessage==null){
-        showDialog(context: context, builder: (context) {
+      if (cachedMessage == null) {
+        showDialog(
+            context: context,
+            builder: (context) {
               return const AlertDialog(
                 content: Text('null 값이 들어 있습니다.'),
               );
@@ -123,8 +131,10 @@ class NfcManagementViewModel {
       var id = cachedMessage['records'][0]['identifier'];
 
       // id가 null이라면 오류메세지 출력 후 return
-      if (id==null){
-        showDialog(context: context, builder: (context) {
+      if (id == null) {
+        showDialog(
+            context: context,
+            builder: (context) {
               return const AlertDialog(
                 content: Text('identifier가 존재하지 않습니다.'),
               );
@@ -138,8 +148,10 @@ class NfcManagementViewModel {
 
       // 정보를 표시하기 위한 임시 다이얼로그
       // 추후 수정된 AleryDialog가 필요할 것 같음.
-      showDialog(context: context, builder: (context) {
-          return AlertDialog(
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
                 title: const Text('인식 결과'),
                 content: Column(
                   children: [
@@ -147,8 +159,7 @@ class NfcManagementViewModel {
                     Text('payload : $decodedPayload'),
                   ],
                 ));
-
-        });
+          });
       NfcManager.instance.stopSession();
     });
   }
