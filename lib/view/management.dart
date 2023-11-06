@@ -17,8 +17,11 @@ class _ManagementPageState extends State<ManagementPage> {
   Widget build(BuildContext context) {
     var dataList = viewModel.getNfcTagList();
     return Scaffold(
-      body: FutureBuilder<List<NfcObject>>(
-          future: dataList,
+      appBar: AppBar(
+        title: const Text('NFC Tag '),
+      ),
+      body:  StreamBuilder<List<NfcObject>>(
+          stream: dataList,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
