@@ -47,7 +47,7 @@ class SettingsViewModel {
   /// ```
   void logout(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('로그아웃 중입니다.. 로그아웃 후 메인 페이지로 이동합니다.')));
+        const SnackBar(content: Text('로그아웃 중입니다.. 로그아웃 후 메인 페이지로 이동합니다.')));
     // 로그인된 사용자의 정보를 표시하는 위젯을 변경한다.
     FirebaseAuth.instance.signOut().then((_) {
       context.go('/login');

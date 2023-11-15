@@ -15,9 +15,8 @@ class _LoginPageState extends State<LoginPage> {
   late var viewModel = LoginViewModel(context: context);
   ///로그인 실패 AlertDialod 선언
 
-  AlertDialog warningDialog = AlertDialog(
-    title: Text('로그인 실패'),
-    content: Text('로그인에 실패하였습니다')
+  AlertDialog warningDialog =
+      const AlertDialog(title: Text('로그인 실패'), content: Text('로그인에 실패하였습니다')
     );
   ///뷰모델 적용시 필요한 함수
   @override
@@ -42,32 +41,34 @@ class _LoginPageState extends State<LoginPage> {
           children: <Widget>[
             ///상단 출석체크 위젯
             ///assets/images/swu_horizontalLogo.png 이미지 추가해놓음
-            SizedBox(height: 80.0),
-             Column(
-              children: <Widget>[
+          const SizedBox(height: 80.0),
+          Column(
+            children: <Widget>[
                 Image.asset('assets/images/swu_horizontalLogo.png'),
-                SizedBox(height: 1.0),
-                Text('태그 관리용', style: TextStyle(fontSize: 30),),
-                ],
-             ),
+              const SizedBox(height: 1.0),
+              const Text(
+                '태그 관리용',
+                style: TextStyle(fontSize: 30),
+              ),
+            ],
+          ),
             /// 아이디 및 비밀번호 입력란
             /// _usernameController 변수 사용
-            SizedBox(height: 60.0,),
-            TextField(
+          const SizedBox(
+            height: 60.0,
+          ),
+          TextField(
             controller: viewModel.emailController,
-            decoration: InputDecoration(
-                  filled: true,
-                  labelText: 'ID'
+            decoration: const InputDecoration(filled: true, labelText: 'ID'
                 ),
               ),
             ///비밀번호 입력란
             ///obscureText 사용 비밀번호 입력시 숨김
-            SizedBox(height: 12.0),
-            TextField(
+          const SizedBox(height: 12.0),
+          TextField(
             controller: viewModel.passwordController,
-            decoration: InputDecoration(
-                filled: true,
-                labelText: 'Password'
+            decoration:
+                const InputDecoration(filled: true, labelText: 'Password'
                 ),
                 obscureText: true,
               ),
@@ -80,16 +81,18 @@ class _LoginPageState extends State<LoginPage> {
                   ElevatedButton(
                   onPressed: () =>
                       viewModel.signUp(loginTextEmptyDialog: warningDialog),
-                  child: Text('Next'))
-                ],
-              ),
+                  child: const Text('Next'))
+            ],
+          ),
             /// 하단 로고
             /// 이미지 에셋 해놓음
             Column(
                 children: [
-                  SizedBox(height: 50,),
-                  Image.asset('assets/images/swu_bluelogo.png')
-                ]
+            const SizedBox(
+              height: 50,
+            ),
+            Image.asset('assets/images/swu_bluelogo.png')
+          ]
             )
           ],
         ),

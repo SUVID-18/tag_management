@@ -42,7 +42,6 @@ class NfcManagementViewModel {
 
     NdefMessage message =
         NdefMessage([NdefRecord.createUri(dynamicLink.shortUrl)]);
-    // 비동기 코드 내에서 위젯을 띄울 시에는 `mounted`(위젯이 정상적으로 로드된 상태인지)된 경우에 진행하는게 맞음
     if (context.mounted) {
       showDialog(
         context: context,

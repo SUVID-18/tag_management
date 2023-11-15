@@ -1,4 +1,3 @@
-import 'package:uuid/uuid.dart';
 
 class Supervisor {
   String name;
